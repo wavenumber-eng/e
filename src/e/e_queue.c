@@ -1,7 +1,8 @@
-#include "e__queue.h"
-#include "stdio.h"
-#include "stdint.h"
-#include "string.h"
+#include "e_queue.h"
+
+#ifndef CONFIG__BQ_MAX_PRINTF_LEN
+	#define CONFIG__BQ_MAX_PRINTF_LEN 64
+#endif
 
 
 void bq__clear(byte_queue_t *bq)
@@ -41,7 +42,7 @@ uint32_t bq__bytes_available(byte_queue_t *bq)
     }
 }
 
-int32_t bq__enqueue(byte_queue_t *bq,uint8_t val)
+queue_result_e bq__enqueue(byte_queue_t *bq,uint8_t val)
 {
     if (bq__bytes_available(bq) == bq->size)
     {
@@ -64,7 +65,7 @@ int32_t bq__enqueue(byte_queue_t *bq,uint8_t val)
     }
 }
 
-int32_t bq__enqueue_array(byte_queue_t *bq,uint8_t *buf,uint32_t len)
+queue_result_e bq__enqueue_array(byte_queue_t *bq,uint8_t *buf,uint32_t len)
 {
     uint32_t i;
     for (i=0;i<len;i++)
@@ -75,25 +76,26 @@ int32_t bq__enqueue_array(byte_queue_t *bq,uint8_t *buf,uint32_t len)
 }
 
 
-int32_t bq__printf(byte_queue_t *bq, const char *format_string,...)
+queue_result_e bq__printf(byte_queue_t *bq, const char *format_string,...)
 {
-    char bq_string_buffer[CONFIG__BQ_MAX_PRINTF_LEN+1];
 
-    va_list argptr;
-    va_start(argptr,format_string);
-    vsprintf((char *)bq_string_buffer,format_string,argptr);
-    va_end(argptr);
+	 static char bq_string_buffer[CONFIG__BQ_MAX_PRINTF_LEN+1];
+     va_list argptr;
+     va_start(argptr,format_string);
+     vsprintf((char *)bq_string_buffer,format_string,argptr);
+     va_end(argptr);
 
-    return bq__enqueue_array(bq,(uint8_t *)bq_string_buffer,strlen(bq_string_buffer));
+     return bq__enqueue_array(bq,(uint8_t *)bq_string_buffer,strlen(bq_string_buffer));
 }
 
 
-int32_t bq__dequeue(byte_queue_t *bq,uint8_t *val)
+queue_result_e bq__dequeue(byte_queue_t *bq,uint8_t *val)
 {
     if (bq__bytes_available(bq) == 0)
     {
         return QUEUE_EMPTY;
-    } else
+    }
+    else
     {
         *val  = bq->storage[bq->read_ptr];
 
