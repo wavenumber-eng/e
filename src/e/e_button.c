@@ -1,4 +1,4 @@
-#include "e__button.h"
+#include "e_button.h"
 
 typedef enum
 {
@@ -9,13 +9,13 @@ typedef enum
     BUTTON_STATE__WAIT_FOR_STABLE                       =     3,
     BUTTON_STATE__WAIT_FOR_STABLE_GENERATE_NO_CODES    =      4
 
-} button_state_t;
+} e_button_state_t;
 
 #ifndef NULL
     #define NULL 0
 #endif
 
-void button__init(button_t *button,
+void e_button__init(e_button_t *button,
                   uint8_t io_port,
                   uint8_t bit,
                   uint8_t polarity,
@@ -38,33 +38,33 @@ void button__init(button_t *button,
     }
 }
  
-uint32_t button__hal(button_t *button)
+uint32_t e_button__hal(e_button_t *button)
 {
    uint32_t output;
    uint32_t p;
      
-   output = button__hal_read_port_pin(button->io_port,button->io_bit); 
+   output = e_button__hal_read_port_pin(button->io_port,button->io_bit); 
 
-   if(button->polarity == BUTTON_POLARITY_LOW_ACTIVE)
+   if(button->polarity == E_BUTTON__POLARITY_LOW_ACTIVE)
     {
         if(output > 0)
         {
-            p = BUTTON_NOT_PRESSED;
+            p = E_BUTTON__NOT_PRESSED;
         }
         else
         {
-            p = BUTTON_PRESSED;
+            p = E_BUTTON__PRESSED;
         }
     }
     else
     {
         if(output == 0)
         {
-            p = BUTTON_NOT_PRESSED;
+            p = E_BUTTON__NOT_PRESSED;
         }
         else
         {
-            p = BUTTON_PRESSED;
+            p = E_BUTTON__PRESSED;
         }
     }
 
@@ -72,7 +72,7 @@ uint32_t button__hal(button_t *button)
 
 }
 
-void button__crunch(button_t *button, uint32_t process_time_ms)
+void e_button__crunch(e_button_t *button, uint32_t process_time_ms)
 {
 
     switch(button->state)
@@ -80,7 +80,7 @@ void button__crunch(button_t *button, uint32_t process_time_ms)
         default:
         case BUTTON_STATE__WAIT_FOR_PRESS:
 
-            if(button__hal(button) == BUTTON_PRESSED)
+            if(e_button__hal(button) == E_BUTTON__PRESSED)
             {
                 button->state = BUTTON_STATE__WAIT_FOR_WAIT_FOR_PRESS_STABLE;
                 button->debounce_timer = 0;
@@ -90,7 +90,7 @@ void button__crunch(button_t *button, uint32_t process_time_ms)
 
         case BUTTON_STATE__WAIT_FOR_WAIT_FOR_PRESS_STABLE:
 
-            if(button__hal(button) == BUTTON_PRESSED)
+            if(e_button__hal(button) == E_BUTTON__PRESSED)
             {
                 button->debounce_timer += process_time_ms;
 
@@ -111,7 +111,7 @@ void button__crunch(button_t *button, uint32_t process_time_ms)
 
         case BUTTON_STATE__WAIT_FOR_RELEASE:
 
-            if(button__hal(button) == BUTTON_PRESSED)
+            if(e_button__hal(button) == E_BUTTON__PRESSED)
             {
                 if(button->hold_time<0xFFFFFFFF)
                     button->hold_time += process_time_ms;
@@ -127,7 +127,7 @@ void button__crunch(button_t *button, uint32_t process_time_ms)
 
         case BUTTON_STATE__WAIT_FOR_STABLE:
 
-            if(button__hal(button) == BUTTON_NOT_PRESSED)
+            if(e_button__hal(button) == E_BUTTON__NOT_PRESSED)
             {
 
                 button->debounce_timer+= process_time_ms;
@@ -149,7 +149,7 @@ void button__crunch(button_t *button, uint32_t process_time_ms)
 
         case BUTTON_STATE__WAIT_FOR_STABLE_GENERATE_NO_CODES:
 
-                if(button__hal(button) == BUTTON_NOT_PRESSED)
+                if(e_button__hal(button) == E_BUTTON__NOT_PRESSED)
                 {
                     button->debounce_timer += process_time_ms;
 
@@ -169,7 +169,7 @@ void button__crunch(button_t *button, uint32_t process_time_ms)
 
 }
 
-uint32_t button__is_active(button_t *button)
+uint32_t e_button__is_active(e_button_t *button)
 {
     if(button->state == BUTTON_STATE__WAIT_FOR_RELEASE)
         return true;
@@ -177,7 +177,7 @@ uint32_t button__is_active(button_t *button)
         return false;
 }
 
-uint32_t button__down(button_t *button)
+uint32_t e_button__down(e_button_t *button)
 {
     uint32_t p = 0;
 
@@ -190,7 +190,7 @@ uint32_t button__down(button_t *button)
     return p;
 }
 
-uint32_t button__up(button_t *B)
+uint32_t e_button__up(e_button_t *B)
 {
     uint32_t p = 0;
 
@@ -203,7 +203,7 @@ uint32_t button__up(button_t *B)
     return p;
 }
 
-void button__programmatic_down(button_t *button)
+void e_button__programmatic_down(e_button_t *button)
 {
     button->state = BUTTON_STATE__WAIT_FOR_RELEASE;
     button->hold_time = 0;
@@ -211,13 +211,13 @@ void button__programmatic_down(button_t *button)
 
 }
 
-void button__programmatic_up(button_t *p)
+void e_button__programmatic_up(e_button_t *p)
 {
     p->state = BUTTON_STATE__WAIT_FOR_PRESS;
     p->up = true;
 }
 
-uint32_t button__get_current_hold_time(button_t *button)
+uint32_t e_button__get_current_hold_time(e_button_t *button)
 {
     uint32_t p = 0;
 
@@ -229,7 +229,7 @@ uint32_t button__get_current_hold_time(button_t *button)
     return p;
 }
 
-void button__reset_state(button_t *button)
+void e_button__reset_state(e_button_t *button)
 {
         button->state = BUTTON_STATE__WAIT_FOR_STABLE_GENERATE_NO_CODES;
         button->up = 0;

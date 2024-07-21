@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdint.h>
-#include <string.h>
+#include "string.h"
 
 #ifndef _E_QUEUE_H_
 #define _E_QUEUE_H_
@@ -15,7 +15,7 @@ typedef struct {
     uint32_t size;
     uint8_t *storage;
     void *hook_arg;
-    bq_hook_t enqueue_hook;   //optional hook that is called when data is enqueued
+    bq_hook_t enqueue_hook;
 
 } byte_queue_t;
 
