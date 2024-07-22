@@ -35,7 +35,7 @@ void e_button__init(e_button_t *B,
                  uint8_t debounce_time_ms
                  );
 
-// Computes the bebounce algorithm. Must be called periodically
+// Computes the debounce algorithm. Must be called periodically
 // process time is the interval in milliseconds between calls to this function
 void e_button__crunch(e_button_t *B , uint32_t process_time_ms);
 

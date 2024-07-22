@@ -2,16 +2,20 @@
 #include "stdlib.h"
 #include "stddef.h"
 #include "stdbool.h"
+#include "stdarg.h"
 
 #include "e_config.h"
+#include "e_vt100.h"
 
 #include "e_queue.h"
 #include "e_debug.h"
 #include "e_shell.h"
 #include "e_tick.h"
 
-#ifndef _E_H_
-#define _E_H_
+#ifndef __E_H__
+#define __E_H__
+
+#define E__INTERFACE__VERSION  0x0001
 
 void 	e__init();
 void 	e__crunch();

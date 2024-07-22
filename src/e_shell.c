@@ -3,7 +3,6 @@
 #include "stdarg.h"
 #include "e.h"
 
-
 #ifndef CONFIG__E_SHELL_PRINTF_MAX_LEN
 	#define CONFIG__E_SHELL_PRINTF_MAX_LEN      (256U)
 #endif
@@ -569,18 +568,18 @@ cmd_function_t shell__help_handler(e_shell__context_t shell, int32_t argc, char 
 
     for (i = 0; i < shell->ShellCommands.numberOfCommandInList; i++)
     {
-        e_shell__printf(shell,VT100_YELLOW);
+        e_shell__printf(shell,E_VT100__YELLOW);
 
         
         e_shell__printf(shell,"%s",
                     shell->ShellCommands.CommandList[i].pcCommand);
 
 
-        e_shell__printf(shell,VT100_WHITE);
+        e_shell__printf(shell,E_VT100__WHITE);
 
         e_shell__printf(shell," > ");
 
-        e_shell__printf(shell,VT100_CYAN);
+        e_shell__printf(shell,E_VT100__CYAN);
 
         e_shell__printf(shell,"%s",
                         shell->ShellCommands.CommandList[i].pcHelpString);
@@ -588,7 +587,7 @@ cmd_function_t shell__help_handler(e_shell__context_t shell, int32_t argc, char 
         e_shell__printf(shell,"\r\n");
     }
 
-    e_shell__printf(shell,VT100_DEFAULT);
+    e_shell__printf(shell,E_VT100__DEFAULT);
     e_shell__printf(shell,"\r\n");
     return 0;
 }

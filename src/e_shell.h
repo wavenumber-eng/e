@@ -5,21 +5,6 @@
 #include "stdbool.h"
 #include "e_config.h"
 
-#define ESC "\x1b"
-#define CSI "\x1b["
-
-#define VT100_RED     	 CSI"31;40m"
-#define VT100_GREEN  	 CSI"32;40m"
-#define VT100_YELLOW 	 CSI"33;40m"
-#define VT100_BLUE   	 CSI"34;40m"
-#define VT100_MAGENTA 	 CSI"35;40m"
-#define VT100_CYAN    	 CSI"36;40m"
-#define VT100_WHITE   	 CSI"37;40m"
-#define VT100_DEFAULT 	 VT100_WHITE
-
-#define VT100_CLEAR_SCREEN  CSI"2J"
-#define VT100_CURSOR_HOME   CSI"H"
-
 typedef enum _fun_key_status
 {
     kSHELL_Normal = 0U,   /*!< Normal key */

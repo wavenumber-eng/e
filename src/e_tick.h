@@ -1,6 +1,8 @@
 #ifndef E__TICK_H_
 #define E__TICK_H_
 
+uint32_t e_tick__get_ms();
+
 void e_tick__delay_ms(uint32_t delay);
 
 uint32_t e_tick__delta(uint32_t *time_in);

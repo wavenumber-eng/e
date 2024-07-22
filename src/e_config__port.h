@@ -2,21 +2,20 @@
 #define _E_CONFIG__PORT_H_
 
 
-#define E__PORT_OPTION__PC		  		(0)
-#define E__PORT_OPTION__SKELETON  		(1)
-#define E__PORT_OPTION__NXP__MCXA  		(2)
-#define E__PORT_OPTION__NXP__LPC865  	(3)
+#ifndef E__PORT_OPTION
+	#error "Porting layer not defined for e"
+#endif
 
-#define E__PORT_OPTION					E__PORT_OPTION__MCXA
+#if  E__PORT_OPTION == E__PORT_OPTION__MCXN
 
+#include <port/nxp__mcxn/e_port__nxp__mcxn.h>
 
-#if  E__PORT_OPTION == E__PORT_OPTION__MCXA
+#elif E__PORT_OPTION == E__PORT_OPTION__MCXA
 
 #include <port/nxp__mcxa/e_port__nxp__mcxa.h>
 
 #elif E__PORT_OPTION == E__PORT_OPTION__LPC865
 
-#include "LPC865.h"
 #include <port/nxp__lpc865/e_port__nxp__lpc865.h>
 
 #endif
@@ -37,7 +36,7 @@
 	#error "e port layer needs  CONFIG__E_WFI  defined"
 #endif
 
-#ifndef  CONFIG__E_TICK_INIT()
+#ifndef  CONFIG__E_TICK_INIT
 	#error "e port layer needs  CONFIG__E_TICK_INIT  defined"
 #endif
 

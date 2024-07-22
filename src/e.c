@@ -1,4 +1,3 @@
-#include "e_config.h"
 #include "e.h"
 
 #if CONFIG__ENABLE_E_SHELL != 0
