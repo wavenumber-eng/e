@@ -11,6 +11,8 @@
 #include "e_debug.h"
 #include "e_shell.h"
 #include "e_tick.h"
+#include "e_state.h"
+
 
 #ifndef __E_H__
 #define __E_H__
