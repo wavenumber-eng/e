@@ -4,7 +4,6 @@
 	#define CONFIG__BQ_MAX_PRINTF_LEN 64
 #endif
 
-
 void bq__clear(byte_queue_t *bq)
 {
     bq->read_ptr=0;
@@ -109,12 +108,23 @@ queue_result_e bq__dequeue(byte_queue_t *bq,uint8_t *val)
 }
 
 
-void bq__dequeue_array(byte_queue_t *bq,uint8_t *val,uint32_t len)
+uint32_t bq__dequeue_array(byte_queue_t *bq,uint8_t *val,uint32_t len)
 {
-    for(int i=0;i<len;i++)
+	uint32_t count;
+
+	count = bq__bytes_available(bq);
+
+	if(len<count)
+	{
+		count = len;
+	}
+
+    for(int i=0;i<count;i++)
     {
         val[i] = bq__dequeue_next(bq);
     }
+
+	return count;
 }
 
 uint8_t bq__dequeue_next(byte_queue_t *bq)

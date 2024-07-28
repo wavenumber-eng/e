@@ -33,7 +33,12 @@ queue_result_e 	   bq__enqueue(byte_queue_t *bq,uint8_t Val);
 queue_result_e 	   bq__enqueue_array(byte_queue_t *bq,uint8_t *Buf,uint32_t len);
 queue_result_e 	   bq__dequeue(byte_queue_t *bq,uint8_t *Val);
 uint8_t 		   bq__dequeue_next(byte_queue_t *bq);
-void 			   bq__dequeue_array(byte_queue_t *bq,uint8_t *val,uint32_t len);
+
+/*
+ *  Returns the actual amount removed if there was less than len available.
+ */
+uint32_t		   bq__dequeue_array(byte_queue_t *bq,uint8_t *val,uint32_t len);
+
 queue_result_e     bq__printf(byte_queue_t *bq, const char *format_string,...);
 
 
