@@ -12,7 +12,10 @@ typedef enum _fun_key_status
     kSHELL_Function = 2U, /*!< Function key */
 } fun_key_status_t;
 
-typedef int32_t (*cmd_function_t)(const void * shell_context, int32_t argc, char **argv);
+
+typedef struct _shell_command_context  _shell_command_context_t;
+
+typedef int32_t (*cmd_function_t)(_shell_command_context_t * shell_context, int32_t argc, char **argv);
 
 typedef struct _shell_command_context
 {
@@ -31,25 +34,21 @@ typedef struct _shell_command_context_list
     uint8_t numberOfCommandInList;                             /*!< The total command in list */
 } e_shell__command_context_list_t;
 
-
-typedef int32_t (*e_shell__read_char_t)(uint8_t *ch);
-typedef int32_t (*e_shell__write_buf_t)(uint8_t *data_buf,uint32_t len);
-
 typedef struct _shell_context_struct
 {
-    char *prompt;                 /*!< Prompt string */
-    enum _fun_key_status stat;    /*!< Special key status */
-    char *Description;            /*!< A textual description of the shell*/
-    char line[CONFIG__E_SHELL_BUFFER_SIZE]; /*!< Consult buffer */
+    char *prompt;
+    enum _fun_key_status stat;
+    char *Description;
+    char line[CONFIG__E_SHELL_BUFFER_SIZE];
     uint32_t                    CurrentPrivilegeLevel;
-    uint8_t cmd_num;              /*!< Number of user commands */
-    uint8_t l_pos;                /*!< Total line position */
-    uint8_t c_pos;                /*!< Current line position */
-    uint8_t echo;                                 /*Determines if characters are echoed*/
-    uint8_t QuietOnBadCommand;                                 /*Determines if characters are echoed*/
+    uint8_t cmd_num;
+    uint8_t l_pos;
+    uint8_t c_pos;
+    uint8_t echo;
+    uint8_t QuietOnBadCommand;
     
-    e_shell__read_char_t	read_char;
-    e_shell__write_buf_t	tx_buffer;
+    byte_queue_t	*rx_bq;		//byte queue with incoming data
+    byte_queue_t	*tx_bq;		//byte queue with outgoing data
 
     uint16_t hist_current;                            /*!< Current history command in hist buff*/
     uint16_t hist_count;                              /*!< Total history command in hist buff*/
@@ -67,11 +66,11 @@ extern "C" {
 #endif /* _cplusplus */
 
 int32_t e_shell__register_cmd(e_shell__context_t shell,
-                              char *pcCommand, 
-							  char *pcHelpString,
-                              cmd_function_t  pFuncCallBack, 
-                              uint32_t MinPrivilegeLevel        
-                              );
+                              char *command,
+							  char *help_string,
+                              cmd_function_t  cmd_callback,
+                              uint32_t min_privledge_level
+							  );
 
 int32_t e_shell__printf(const e_shell__context_struct * shell,const char *FormatString,...);
 

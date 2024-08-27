@@ -1,7 +1,7 @@
 #include "e_queue.h"
 
 #ifndef CONFIG__BQ_MAX_PRINTF_LEN
-	#define CONFIG__BQ_MAX_PRINTF_LEN 64
+	#define CONFIG__BQ_MAX_PRINTF_LEN 128
 #endif
 
 void bq__clear(byte_queue_t *bq)
@@ -27,6 +27,11 @@ void bq__init(byte_queue_t *bq,uint32_t Size,uint8_t * Storage)
 
 uint32_t bq__bytes_available(byte_queue_t *bq)
 {
+	return ((bq->size) - bq__bytes_remaining(bq));
+}
+
+uint32_t bq__bytes_remaining(byte_queue_t *bq)
+{
     if (bq->read_ptr > bq->write_ptr)
     {
         return (bq->size - bq->read_ptr + bq->write_ptr);
@@ -40,6 +45,7 @@ uint32_t bq__bytes_available(byte_queue_t *bq)
         return 0;
     }
 }
+
 
 queue_result_e bq__enqueue(byte_queue_t *bq,uint8_t val)
 {
@@ -64,27 +70,27 @@ queue_result_e bq__enqueue(byte_queue_t *bq,uint8_t val)
     }
 }
 
-queue_result_e bq__enqueue_array(byte_queue_t *bq,uint8_t *buf,uint32_t len)
+int32_t bq__enqueue_array(byte_queue_t *bq,uint8_t *buf,uint32_t len)
 {
     uint32_t i;
     for (i=0;i<len;i++)
     {
         bq__enqueue(bq,buf[i]);
     }
-    return QUEUE_OK;
+    return len;
 }
 
 
 queue_result_e bq__printf(byte_queue_t *bq, const char *format_string,...)
 {
 
-	 static char bq_string_buffer[CONFIG__BQ_MAX_PRINTF_LEN+1];
+	 uint8_t bq_string_buffer[CONFIG__BQ_MAX_PRINTF_LEN+1];
      va_list argptr;
      va_start(argptr,format_string);
-     vsprintf((char *)bq_string_buffer,format_string,argptr);
+     vsnprintf((char *)bq_string_buffer,CONFIG__BQ_MAX_PRINTF_LEN,format_string,argptr);
      va_end(argptr);
 
-     return bq__enqueue_array(bq,(uint8_t *)bq_string_buffer,strlen(bq_string_buffer));
+     return bq__enqueue_array(bq,(uint8_t *)bq_string_buffer,strnlen((const char *)bq_string_buffer,CONFIG__BQ_MAX_PRINTF_LEN));
 }
 
 

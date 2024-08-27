@@ -22,6 +22,10 @@
 
 #define E_LOG(...) SEGGER_RTT_LOG(__VA_ARGS__);
 
+#define E_LOG_INF(...) SEGGER_RTT_LOG(__VA_ARGS__);
+#define E_LOG_DBG(...) SEGGER_RTT_LOG(__VA_ARGS__);
+#define E_LOG_ERR(...) SEGGER_RTT_LOG(__VA_ARGS__);
+
 #else
 
 #define E_LOG(...)
@@ -35,7 +39,12 @@
  */
 
 #define E_DBG(...)   E_LOG(__VA_ARGS__)
+#define E_ERR(...)   E_LOG_ERR(__VA_ARGS__)
+
 #define E_MSG(...)   E_LOG(__VA_ARGS__)
 #define E_DEBUG(...) E_LOG(__VA_ARGS__)
+
+#define E_DEBUG(...) E_LOG(__VA_ARGS__)
+
 
 #endif

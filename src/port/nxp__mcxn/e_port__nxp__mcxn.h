@@ -19,4 +19,5 @@
 										           SysTick_Config((uint32_t)SystemCoreClock * (uint32_t)CONFIG__E_TICK_PERIOD__MS / 1000);\
 									               NVIC_SetPriority(SysTick_IRQn , CONFIG__E_TICK_IRQ_PRIORITY)\
 
+
 #endif

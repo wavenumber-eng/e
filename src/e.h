@@ -22,8 +22,12 @@
 void 	e__init();
 void 	e__crunch();
 
-#if CONFIG__ENABLE_E_SHELL != 0
-	void e__register_system_shell(e_shell__context_t shell);
+#if CONFIG__E_SHELL__ENABLE != 0
+
+    void e__register_system_shell(e_shell__context_t shell);
+
+	e_shell__context_t e__get_system_shell();
+
 #endif
 
 #endif /* SYSTEM_H_ */

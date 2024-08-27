@@ -45,34 +45,15 @@ static int32_t parse_line(e_shell__context_t ThisShellContext, const char *cmd, 
 
 static int32_t str_cmp(const char *str1, const char *str2, int32_t count); /*!< compare string command */
 
-static void process_cmd(e_shell__context_t ThisShellContext, const char *cmd); /*!< process a command */
+static void process_cmd(e_shell__context_t shell, const char *cmd); /*!< process a command */
 
-static void get_history(e_shell__context_t ThisShellContext, uint8_t hist_pos); /*!< get commands history */
+static void get_history(e_shell__context_t shell, uint8_t hist_pos); /*!< get commands history */
 
-static void autocomplete(e_shell__context_t ThisShellContext); /*!< auto complete command */
+static void autocomplete(e_shell__context_t shell); /*!< auto complete command */
 
 static int32_t StrLen(const char *str); /*!< get string length */
 
 static char *StrCopy(char *dest, const char *src, int32_t count); /*!< string copy */
-
-int32_t e_shell__printf(const e_shell__context_struct * shell,const char *FormatString,...)
-{
-
-	if(shell->tx_buffer != NULL)
-	{
-		char string_buffer[CONFIG__E_SHELL_PRINTF_MAX_LEN];
-
-		va_list argptr;
-		va_start(argptr,FormatString);
-		vsnprintf((char *)string_buffer,CONFIG__E_SHELL_PRINTF_MAX_LEN,FormatString,argptr);
-		va_end(argptr);
-
-
-		shell->tx_buffer((uint8_t *)string_buffer,strnlen(string_buffer,CONFIG__E_SHELL_PRINTF_MAX_LEN));
-	}
-
-	return 0;
-}
 
 
 void e_shell__crunch(e_shell__context_t shell)
@@ -85,12 +66,8 @@ void e_shell__crunch(e_shell__context_t shell)
         return;
     }
 
-    if(shell->read_char == NULL)
+    while(bq__dequeue(shell->rx_bq,&ch)==QUEUE_OK)
     {
-    	return;
-    }
-        while(shell->read_char(&ch)>=0)
-        {
                 /* Special key */
                 if (ch == KEY_ESC)
                 {
@@ -131,14 +108,14 @@ void e_shell__crunch(e_shell__context_t shell)
                         case 'D': /* Left key */
                             if (shell->c_pos)
                             {
-                                e_shell__printf(shell,"\b");
+                                bq__printf(shell->tx_bq,"\b");
                                 shell->c_pos--;
                             }
                             break;
                         case 'C': /* Right key */
                             if (shell->c_pos < shell->l_pos)
                             {
-                                if(shell->echo){e_shell__printf(shell,"%c", shell->line[shell->c_pos]);};
+                                if(shell->echo){bq__printf(shell->tx_bq,"%c", shell->line[shell->c_pos]);};
                                 shell->c_pos++;
                             }
                             break;
@@ -154,7 +131,7 @@ void e_shell__crunch(e_shell__context_t shell)
                     /* Move the cursor to the beginning of line */
                     for (i = 0; i < shell->c_pos; i++)
                     {
-                        e_shell__printf(shell,"\b");
+                        bq__printf(shell->tx_bq,"\b");
                     }
                     /* Do auto complete */
                     autocomplete(shell);
@@ -187,18 +164,18 @@ void e_shell__crunch(e_shell__context_t shell)
                                 shell->l_pos - shell->c_pos);
                         shell->line[shell->l_pos] = 0;
 
-                        if(shell->echo){e_shell__printf(shell,"\b%s  \b", &shell->line[shell->c_pos]);};
+                        if(shell->echo){bq__printf(shell->tx_bq,"\b%s  \b", &shell->line[shell->c_pos]);};
 
                         /* Reset position */
                         for (i = shell->c_pos; i <= shell->l_pos; i++)
                         {
-                            if(shell->echo){e_shell__printf(shell,"\b");};
+                            if(shell->echo){bq__printf(shell->tx_bq,"\b");};
 
                         }
                     }
                     else /* Normal backspace operation */
                     {
-                        if(shell->echo){e_shell__printf(shell,"\b \b");};
+                        if(shell->echo){bq__printf(shell->tx_bq,"\b \b");};
                         shell->line[shell->l_pos] = 0;
                     }
                     continue;
@@ -216,12 +193,12 @@ void e_shell__crunch(e_shell__context_t shell)
                 /* Handle end of line, break */
                 if ((ch == '\r') || (ch == '\n'))
                 {
-                    if(shell->echo){e_shell__printf(shell,"\r\n");};
+                    if(shell->echo){bq__printf(shell->tx_bq,"\r\n");};
                     process_cmd(shell, shell->line);
                     /* Reset all params */
                     shell->c_pos = shell->l_pos = 0;
                     shell->hist_current = 0;
-                    if(shell->echo){e_shell__printf(shell,shell->prompt);};
+                    if(shell->echo){bq__printf(shell->tx_bq,shell->prompt);};
                     memset(shell->line, 0, sizeof(shell->line));
                     continue;
                 }
@@ -233,17 +210,17 @@ void e_shell__crunch(e_shell__context_t shell)
                             shell->l_pos - shell->c_pos);
                     shell->line[shell->c_pos] = ch;
 
-                    if(shell->echo){e_shell__printf(shell,"%s", &shell->line[shell->c_pos]);};
+                    if(shell->echo){bq__printf(shell->tx_bq,"%s", &shell->line[shell->c_pos]);};
                     /* Move the cursor to new position */
                     for (i = shell->c_pos; i < shell->l_pos; i++)
                     {
-                        if(shell->echo){e_shell__printf(shell,"\b");};
+                        if(shell->echo){bq__printf(shell->tx_bq,"\b");};
                     }
                 }
                 else
                 {
                     shell->line[shell->l_pos] = ch;
-                    if(shell->echo){e_shell__printf(shell,"%c", ch);}
+                    if(shell->echo){bq__printf(shell->tx_bq,"%c", ch);}
                 }
 
                 ch = 0;
@@ -254,7 +231,7 @@ void e_shell__crunch(e_shell__context_t shell)
 }
 
 
-static void process_cmd(e_shell__context_t ThisShellContext, const char *cmd)
+static void process_cmd(e_shell__context_t shell, const char *cmd)
 {
     static const e_shell__command_context_t *tmpCommand = NULL;
     static const char *tmpCommandString;
@@ -266,13 +243,13 @@ static void process_cmd(e_shell__context_t ThisShellContext, const char *cmd)
     uint8_t i = 0;
 
     tmpLen = StrLen(cmd);
-    argc = parse_line(ThisShellContext,cmd, tmpLen, argv);
+    argc = parse_line(shell,cmd, tmpLen, argv);
 
     if ((tmpCommand == NULL) && (argc > 0))
     {
-        for (i = 0; i < ThisShellContext->ShellCommands.numberOfCommandInList; i++)
+        for (i = 0; i < shell->ShellCommands.numberOfCommandInList; i++)
         {
-            tmpCommand = &(ThisShellContext->ShellCommands.CommandList[i]);
+            tmpCommand = &(shell->ShellCommands.CommandList[i]);
             tmpCommandString = tmpCommand->pcCommand;
             tmpCommandLen = StrLen(tmpCommandString);
 
@@ -298,10 +275,10 @@ static void process_cmd(e_shell__context_t ThisShellContext, const char *cmd)
 
     if(flag == 0)
     {
-        if(ThisShellContext->QuietOnBadCommand==0)
+        if(shell->QuietOnBadCommand==0)
         {
-            e_shell__printf(ThisShellContext,
-                    "\r\n\"%s\" Command not recognized.  Enter 'help' to view a list of available commands.\r\n\r\n",cmd);
+            bq__printf(shell->tx_bq,
+            				"\r\n\"%s\" Command not recognized.  Enter 'help' to view a list of available commands.\r\n\r\n",cmd);
                
         }
 
@@ -312,36 +289,36 @@ static void process_cmd(e_shell__context_t ThisShellContext, const char *cmd)
     {
         tmpLen = StrLen(cmd);
         /* Compare with last command. Push back to history buffer if different */
-        if (tmpLen != str_cmp(cmd, ThisShellContext->hist_buf[0], StrLen(cmd)))
+        if (tmpLen != str_cmp(cmd, shell->hist_buf[0], StrLen(cmd)))
         {
             for (i = CONFIG__E_SHELL_HIST_MAX - 1; i > 0; i--)
             {
-                memset(ThisShellContext->hist_buf[i], '\0', CONFIG__E_SHELL_BUFFER_SIZE);
-                tmpLen = StrLen(ThisShellContext->hist_buf[i - 1]);
-                StrCopy(ThisShellContext->hist_buf[i], ThisShellContext->hist_buf[i - 1], tmpLen);
+                memset(shell->hist_buf[i], '\0', CONFIG__E_SHELL_BUFFER_SIZE);
+                tmpLen = StrLen(shell->hist_buf[i - 1]);
+                StrCopy(shell->hist_buf[i], shell->hist_buf[i - 1], tmpLen);
             }
-            memset(ThisShellContext->hist_buf[0], '\0', CONFIG__E_SHELL_BUFFER_SIZE);
+            memset(shell->hist_buf[0], '\0', CONFIG__E_SHELL_BUFFER_SIZE);
             tmpLen = StrLen(cmd);
-            StrCopy(ThisShellContext->hist_buf[0], cmd, tmpLen);
-            if (ThisShellContext->hist_count < CONFIG__E_SHELL_HIST_MAX)
+            StrCopy(shell->hist_buf[0], cmd, tmpLen);
+            if (shell->hist_count < CONFIG__E_SHELL_HIST_MAX)
             {
-                ThisShellContext->hist_count++;
+                shell->hist_count++;
             }
         }
 
         if(tmpCommand->pFuncCallBack == 0)
         {
-            e_shell__printf(ThisShellContext,"\r\nCommand %s has a null callback\r\n\r\n",tmpCommand->pcCommand);
+            bq__printf(shell->tx_bq,"\r\nCommand %s has a null callback\r\n\r\n",tmpCommand->pcCommand);
         }
         else
         {
 
-           if(ThisShellContext->CurrentPrivilegeLevel >= tmpCommand->MinPrivilegeLevel)
-                tmpCommand->pFuncCallBack((void *)ThisShellContext, argc, argv);
+           if(shell->CurrentPrivilegeLevel >= tmpCommand->MinPrivilegeLevel)
+                tmpCommand->pFuncCallBack((void *)shell, argc, argv);
             else
             {
-                if(ThisShellContext->QuietOnBadCommand==0)
-                    e_shell__printf(ThisShellContext,"\r\nYou do not have privilege to run %s\r\n\r\n",tmpCommand->pcCommand);
+                if(shell->QuietOnBadCommand==0)
+                    bq__printf(shell->tx_bq,"\r\nYou do not have privilege to run %s\r\n\r\n",tmpCommand->pcCommand);
             }
             
         }
@@ -351,39 +328,39 @@ static void process_cmd(e_shell__context_t ThisShellContext, const char *cmd)
 
 }
 
-static void get_history(e_shell__context_t ThisShellContext, uint8_t hist_pos)
+static void get_history(e_shell__context_t shell, uint8_t hist_pos)
 {
     uint8_t i;
     uint32_t tmp;
 
-    if (ThisShellContext->hist_buf[0][0] == '\0')
+    if (shell->hist_buf[0][0] == '\0')
     {
-        ThisShellContext->hist_current = 0;
+        shell->hist_current = 0;
         return;
     }
     if (hist_pos > CONFIG__E_SHELL_HIST_MAX)
     {
         hist_pos = CONFIG__E_SHELL_HIST_MAX - 1;
     }
-    tmp = StrLen(ThisShellContext->line);
+    tmp = StrLen(shell->line);
     /* Clear current if have */
     if (tmp > 0)
     {
-        memset(ThisShellContext->line, '\0', tmp);
+        memset(shell->line, '\0', tmp);
         for (i = 0; i < tmp; i++)
         {
-            e_shell__printf(ThisShellContext,"\b \b");
+            bq__printf(shell->tx_bq,"\b \b");
         }
     }
 
-    ThisShellContext->l_pos = StrLen(ThisShellContext->hist_buf[hist_pos]);
-    ThisShellContext->c_pos = ThisShellContext->l_pos;
-    StrCopy(ThisShellContext->line, ThisShellContext->hist_buf[hist_pos], ThisShellContext->l_pos);
+    shell->l_pos = StrLen(shell->hist_buf[hist_pos]);
+    shell->c_pos = shell->l_pos;
+    StrCopy(shell->line, shell->hist_buf[hist_pos], shell->l_pos);
 
-    if(ThisShellContext->echo){e_shell__printf(ThisShellContext,ThisShellContext->hist_buf[hist_pos]);};
+    if(shell->echo){bq__printf(shell->tx_bq,shell->hist_buf[hist_pos]);};
 }
 
-static void autocomplete(e_shell__context_t ThisShellContext)
+static void autocomplete(e_shell__context_t shell)
 {
     int32_t len;
     int32_t minLen;
@@ -395,30 +372,30 @@ static void autocomplete(e_shell__context_t ThisShellContext)
     minLen = 0;
     namePtr = NULL;
 
-    if (!StrLen(ThisShellContext->line))
+    if (!StrLen(shell->line))
     {
         return;
     }
-    if(ThisShellContext->echo){e_shell__printf(ThisShellContext,"\r\n");};
+    if(shell->echo){bq__printf(shell->tx_bq,"\r\n");};
     /* Empty tab, list all commands */
-    if (ThisShellContext->line[0] == '\0')
+    if (shell->line[0] == '\0')
     {
-        shell__help_handler(ThisShellContext, 0, NULL);
+        shell__help_handler(shell, 0, NULL);
         return;
     }
     /* Do auto complete */
-    for (i = 0; i < ThisShellContext->ShellCommands.numberOfCommandInList; i++)
+    for (i = 0; i < shell->ShellCommands.numberOfCommandInList; i++)
     {
-        tmpCommand = &ThisShellContext->ShellCommands.CommandList[i];
+        tmpCommand = &shell->ShellCommands.CommandList[i];
         cmdName = tmpCommand->pcCommand;
-        if (str_cmp(ThisShellContext->line, cmdName, StrLen(ThisShellContext->line)) == 0)
+        if (str_cmp(shell->line, cmdName, StrLen(shell->line)) == 0)
         {
             if (minLen == 0)
             {
                 namePtr = cmdName;
                 minLen = StrLen(namePtr);
                 /* Show possible matches */
-                if(ThisShellContext->echo){e_shell__printf(ThisShellContext,"%s\r\n", cmdName);};
+                if(shell->echo){bq__printf(shell->tx_bq,"%s\r\n", cmdName);};
                 continue;
             }
             len = str_cmp(namePtr, cmdName, StrLen(namePtr));
@@ -435,9 +412,9 @@ static void autocomplete(e_shell__context_t ThisShellContext)
     /* Auto complete string */
     if (namePtr)
     {
-        StrCopy(ThisShellContext->line, namePtr, minLen);
+        StrCopy(shell->line, namePtr, minLen);
     }
-    if(ThisShellContext->echo){e_shell__printf(ThisShellContext,"%s%s", ThisShellContext->prompt, ThisShellContext->line);};
+    if(shell->echo){bq__printf(shell->tx_bq,"%s%s", shell->prompt, shell->line);};
     return;
 }
 
@@ -533,23 +510,23 @@ static int32_t parse_line(e_shell__context_t ThisShellContext,const char *cmd, u
     return argc;
 }
 
-int32_t e_shell__register_cmd(e_shell__context_t ThisShellContext,
-                              char *pcCommand, 
-                  char *pcHelpString,   
-                              cmd_function_t  pFuncCallBack, 
-                              uint32_t MinPrivilegeLevel    
+int32_t e_shell__register_cmd(e_shell__context_t shell,
+                              char *command, 
+							  char *help_string,
+                              cmd_function_t  cmd_callback, 
+                              uint32_t min_privledge_level    
                        )
 {
     int32_t result = 0;
 
     /* If have room  in command list */
-    if (ThisShellContext->ShellCommands.numberOfCommandInList < CONFIG__E_SHELL_MAX_CMD)
+    if (shell->ShellCommands.numberOfCommandInList < CONFIG__E_SHELL_MAX_CMD)
     {
-        ThisShellContext->ShellCommands.CommandList[ThisShellContext->ShellCommands.numberOfCommandInList].pcCommand = pcCommand;
-        ThisShellContext->ShellCommands.CommandList[ThisShellContext->ShellCommands.numberOfCommandInList].pcHelpString = pcHelpString;
-        ThisShellContext->ShellCommands.CommandList[ThisShellContext->ShellCommands.numberOfCommandInList].pFuncCallBack = pFuncCallBack;
-        ThisShellContext->ShellCommands.CommandList[ThisShellContext->ShellCommands.numberOfCommandInList].MinPrivilegeLevel = MinPrivilegeLevel;
-        ThisShellContext->ShellCommands.numberOfCommandInList++;
+        shell->ShellCommands.CommandList[shell->ShellCommands.numberOfCommandInList].pcCommand = command;
+        shell->ShellCommands.CommandList[shell->ShellCommands.numberOfCommandInList].pcHelpString = help_string;
+        shell->ShellCommands.CommandList[shell->ShellCommands.numberOfCommandInList].pFuncCallBack = cmd_callback;
+        shell->ShellCommands.CommandList[shell->ShellCommands.numberOfCommandInList].MinPrivilegeLevel = min_privledge_level;
+        shell->ShellCommands.numberOfCommandInList++;
     }
     else
     {
@@ -563,32 +540,32 @@ cmd_function_t shell__help_handler(e_shell__context_t shell, int32_t argc, char 
 {
     uint32_t i = 0;
 
-    e_shell__printf(shell,"\r\nCommands:");
-    e_shell__printf(shell,"\r\n------------------------\r\n\r\n");
+    bq__printf(shell->tx_bq,"\r\nCommands:");
+    bq__printf(shell->tx_bq,"\r\n------------------------\r\n\r\n");
 
     for (i = 0; i < shell->ShellCommands.numberOfCommandInList; i++)
     {
-        e_shell__printf(shell,E_VT100__YELLOW);
+        bq__printf(shell->tx_bq,E_VT100__YELLOW);
 
         
-        e_shell__printf(shell,"%s",
+        bq__printf(shell->tx_bq,"%s",
                     shell->ShellCommands.CommandList[i].pcCommand);
 
 
-        e_shell__printf(shell,E_VT100__WHITE);
+        bq__printf(shell->tx_bq,E_VT100__WHITE);
 
-        e_shell__printf(shell," > ");
+        bq__printf(shell->tx_bq," > ");
 
-        e_shell__printf(shell,E_VT100__CYAN);
+        bq__printf(shell->tx_bq,E_VT100__CYAN);
 
-        e_shell__printf(shell,"%s",
+        bq__printf(shell->tx_bq,"%s",
                         shell->ShellCommands.CommandList[i].pcHelpString);
 
-        e_shell__printf(shell,"\r\n");
+        bq__printf(shell->tx_bq,"\r\n");
     }
 
-    e_shell__printf(shell,E_VT100__DEFAULT);
-    e_shell__printf(shell,"\r\n");
+    bq__printf(shell->tx_bq,E_VT100__DEFAULT);
+    bq__printf(shell->tx_bq,"\r\n");
     return 0;
 }
 

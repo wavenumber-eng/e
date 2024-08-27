@@ -23,14 +23,15 @@ typedef enum
 {
 	 QUEUE_FULL    =   -1,
 	 QUEUE_EMPTY   =   -2,
-	 QUEUE_OK      =    0
+	 QUEUE_OK      =    0,
 } queue_result_e;
 
 void 	           bq__init(byte_queue_t *bq,uint32_t size,uint8_t * storage);
 uint32_t		   bq__bytes_available(byte_queue_t *bq);
+uint32_t		   bq__bytes_remaining(byte_queue_t *bq);
 void	           bq__clear(byte_queue_t *bq);
 queue_result_e 	   bq__enqueue(byte_queue_t *bq,uint8_t Val);
-queue_result_e 	   bq__enqueue_array(byte_queue_t *bq,uint8_t *Buf,uint32_t len);
+int32_t		 	   bq__enqueue_array(byte_queue_t *bq,uint8_t *Buf,uint32_t len);
 queue_result_e 	   bq__dequeue(byte_queue_t *bq,uint8_t *Val);
 uint8_t 		   bq__dequeue_next(byte_queue_t *bq);
 
