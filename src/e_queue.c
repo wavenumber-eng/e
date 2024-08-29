@@ -25,12 +25,12 @@ void bq__init(byte_queue_t *bq,uint32_t Size,uint8_t * Storage)
     }
 }
 
-uint32_t bq__bytes_available(byte_queue_t *bq)
+uint32_t bq__bytes_available_to_write(byte_queue_t *bq)
 {
-	return ((bq->size) - bq__bytes_remaining(bq));
+	return ((bq->size) - bq__bytes_available_to_read(bq));
 }
 
-uint32_t bq__bytes_remaining(byte_queue_t *bq)
+uint32_t bq__bytes_available_to_read(byte_queue_t *bq)
 {
     if (bq->read_ptr > bq->write_ptr)
     {
@@ -49,7 +49,7 @@ uint32_t bq__bytes_remaining(byte_queue_t *bq)
 
 queue_result_e bq__enqueue(byte_queue_t *bq,uint8_t val)
 {
-    if (bq__bytes_available(bq) == bq->size)
+    if (bq__bytes_available_to_write(bq) == 0)
     {
         return QUEUE_FULL;
     }
@@ -96,7 +96,7 @@ queue_result_e bq__printf(byte_queue_t *bq, const char *format_string,...)
 
 queue_result_e bq__dequeue(byte_queue_t *bq,uint8_t *val)
 {
-    if (bq__bytes_available(bq) == 0)
+    if (bq__bytes_available_to_read(bq) == 0)
     {
         return QUEUE_EMPTY;
     }
@@ -118,7 +118,7 @@ uint32_t bq__dequeue_array(byte_queue_t *bq,uint8_t *val,uint32_t len)
 {
 	uint32_t count;
 
-	count = bq__bytes_available(bq);
+	count = bq__bytes_available_to_read(bq);
 
 	if(len<count)
 	{
@@ -137,10 +137,12 @@ uint8_t bq__dequeue_next(byte_queue_t *bq)
 {
     uint8_t retval;
 
-    if (bq__bytes_available(bq) == 0)
+    if (bq__bytes_available_to_read(bq) == 0)
     {
         return 0;
-    } else {
+    }
+    else
+    {
         retval  = bq->storage[bq->read_ptr];
 
         bq->read_ptr++;

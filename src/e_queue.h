@@ -27,8 +27,8 @@ typedef enum
 } queue_result_e;
 
 void 	           bq__init(byte_queue_t *bq,uint32_t size,uint8_t * storage);
-uint32_t		   bq__bytes_available(byte_queue_t *bq);
-uint32_t		   bq__bytes_remaining(byte_queue_t *bq);
+uint32_t		   bq__bytes_available_to_write(byte_queue_t *bq);
+uint32_t 		   bq__bytes_available_to_read(byte_queue_t *bq);
 void	           bq__clear(byte_queue_t *bq);
 queue_result_e 	   bq__enqueue(byte_queue_t *bq,uint8_t Val);
 int32_t		 	   bq__enqueue_array(byte_queue_t *bq,uint8_t *Buf,uint32_t len);
