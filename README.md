@@ -1,4 +1,4 @@
-#e for embedded
+# e for embedded
 
 Wavenumber core embedded utilities for baremetal and rtos.  
 
