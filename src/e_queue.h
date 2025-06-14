@@ -19,6 +19,8 @@ typedef struct {
 
 } byte_queue_t;
 
+
+
 typedef enum
 {
 	 QUEUE_FULL    =   -1,
@@ -43,7 +45,6 @@ uint32_t		   bq__dequeue_array(byte_queue_t *bq,uint8_t *val,uint32_t len);
 queue_result_e     bq__printf(byte_queue_t *bq, const char *format_string,...);
 
 
-
 #define BYTE_QUEUE__MAKE(name,length) uint8_t bq__##name##__storage[length];\
 									  byte_queue_t name = { \
 									 .read_ptr=0,\
@@ -51,5 +52,8 @@ queue_result_e     bq__printf(byte_queue_t *bq, const char *format_string,...);
 								     .size = length,	\
 								     .storage = bq__##name##__storage\
 								      }
+
+#define E_BYTE_QUEUE__MAKE	BYTE_QUEUE__MAKE
+#define E_BQ_QUEUE__MAKE	BYTE_QUEUE__MAKE
 
 #endif /* QUEUE_H_ */

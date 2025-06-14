@@ -1,8 +1,12 @@
 #include "e.h"
 
-static volatile uint32_t e__delay_ticker;
+#include <zephyr/kernel.h>
 
+
+
+static volatile uint32_t e__delay_ticker;
 static volatile uint32_t e__ms_ticker;
+
 
 static uint32_t e_tick__trigger_ticker;
 
@@ -10,20 +14,34 @@ static e_tick__trigger_handler_t *e_tick__trigger_list__irq = CONFIG__E_LIST_NUL
 
 static e_tick__trigger_handler_t *e_tick__trigger_list__foreground = CONFIG__E_LIST_NULL;
 
-
 uint32_t e_tick__get_ms()
 {
-    return e__ms_ticker;
+	#ifdef __ZEPHYR__
+
+		return k_uptime_get_32();
+	#else
+
+		return e__ms_ticker;
+
+	#endif
 }
 
-void e_tick__delay_ms(uint32_t delay)
+void e_tick__delay_ms(uint32_t delay_ms)
 {
-	e__delay_ticker = 0;
+	#ifdef __ZEPHYR__
 
-    while (e__delay_ticker < delay)
-    {
-    	CONFIG__E_WFI;
-    }
+		k_sleep(K_MSEC(delay_ms));
+
+	#else
+
+		e__delay_ticker = 0;
+
+		while (e__delay_ticker < delay_ms)
+		{
+			CONFIG__E_WFI;
+		}
+
+	#endif
 }
 
 
@@ -34,7 +52,7 @@ uint32_t e_tick__delta(uint32_t *time_in)
     if (time_in == NULL)
         return 0;
 
-    elapsed = e__ms_ticker;
+    elapsed = k_uptime_get();
 
     if (elapsed >= *time_in)
     {
@@ -62,6 +80,7 @@ uint32_t e_tick__timeout(uint32_t *time_in, uint32_t delta)
 
     return 0;
 }
+
 
 void e_tick__init()
 {
@@ -153,12 +172,14 @@ void e_tick__crunch()
 {
 	uint32_t interval;
 
+
 	if((interval = e_tick__timeout(&e_tick__trigger_ticker,CONFIG__E_FOREGROUND_TRIGGER_CHECK_INTERVAL)))
 	{
 		e_tick__trigger_scan(e_tick__trigger_list__foreground,interval);
 		e_tick__trigger_exe(e_tick__trigger_list__foreground);
 	}
 }
+
 
 void CONFIG__E_TICK_IRQ_HANDLER_NAME()
 {

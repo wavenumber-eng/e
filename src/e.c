@@ -14,7 +14,6 @@ e_shell__context_t e__get_system_shell()
 	return e_shell__system;
 }
 
-
 #endif
 
 void e__init()

@@ -1,10 +1,12 @@
 #ifndef _E__SHELL_H_
 #define _E__SHELL_H_
 
+
 #include "stdint.h"
 #include "stdbool.h"
 #include "e_config.h"
 
+#if CONFIG__E_SHELL__ENABLE != 0
 typedef enum _fun_key_status
 {
     kSHELL_Normal = 0U,   /*!< Normal key */
@@ -79,6 +81,7 @@ void e_shell__crunch(e_shell__context_t shell);
 cmd_function_t shell__help_handler(e_shell__context_t shell, int32_t argc, char **argv);
 
 
+#endif
 
 #if defined(__cplusplus)
 }

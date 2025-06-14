@@ -4,7 +4,10 @@
 #include "stdbool.h"
 #include "stdarg.h"
 
-#include "e_config.h"
+#ifndef __ZEPHYR__
+    #include "e_config.h"
+#endif
+
 #include "e_vt100.h"
 
 #include "e_queue.h"
