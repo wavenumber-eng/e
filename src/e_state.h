@@ -1,4 +1,3 @@
-
 #ifndef E_STATE_H_
 #define E_STATE_H_
 
@@ -13,8 +12,13 @@ typedef enum
 typedef struct e_state_machine e_state_machine_t;
 
 typedef int32_t (*e_state_function_t)(e_state_machine_t *);
-typedef bool (*e_state_transition_function_t)(e_state_machine_t *,e_state_function_t);
+typedef bool (*e_state_transition_function_t)(e_state_machine_t *,int32_t);
 
+typedef struct e_state_table_entry
+{
+	e_state_function_t state_function;
+	char * description;
+} e_state_table_entry_t;
 
 typedef struct e_state_machine
 {
@@ -23,8 +27,10 @@ typedef struct e_state_machine
 
 	void * user;
 
-	e_state_function_t queued_state;
-	e_state_function_t current_state;
+	int32_t queued_state;
+	int32_t current_state;
+
+	e_state_table_entry_t * state_table;
 
 	//Internal timing
 	uint32_t time_to_wait;
@@ -37,21 +43,21 @@ typedef struct e_state_machine
 }e_state_machine_t;
 
 typedef e_state_machine_t e_sm_t;
-
-
-
 void e_state__init(e_state_machine_t *sm,
 				   e_state_transition_function_t state_transitition_function,
-				   e_state_function_t initial_state
-				    );
+				   e_state_table_entry_t *state_table
+				   );
 
 void e_state__crunch(e_state_machine_t *sm);
 
-void e_state__transition(e_state_machine_t * sm,e_state_function_t next_state);
+void e_state__transition(e_state_machine_t * sm,
+						 int32_t next_state);
 
-void e_state__delayed_transition(e_state_machine_t * sm,e_state_function_t next_state,uint32_t ms_to_wait);
+void e_state__delayed_transition(e_state_machine_t * sm,
+								 int32_t next_state,uint32_t ms_to_wait);
 
-void e_state__wait(e_state_machine_t * sm,uint32_t ms_to_wait);
+void e_state__wait(e_state_machine_t * sm,
+				  uint32_t ms_to_wait);
 
 
 #endif /* E_STATE_H_ */

@@ -14,6 +14,6 @@ if(CONFIG_E)
     zephyr_library_sources_ifdef(CONFIG_E    ../src/e_tick.c)
     zephyr_library_sources_ifdef(CONFIG_E    ../src/e_queue.c)
     zephyr_library_sources_ifdef(CONFIG_E    ../src/e_state.c)
-
+    zephyr_library_sources_ifdef(CONFIG_E    ../src/e_button.c)
 endif()
 

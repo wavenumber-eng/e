@@ -2,6 +2,15 @@
 #include "stdint.h"
 #include "stdbool.h"
 
+#ifdef __ZEPHYR__
+    #include <zephyr/drivers/gpio.h>
+#endif
+
+#ifndef E_WEAK
+    #define E_WEAK __attribute__((weak))
+#endif
+
+
 #ifndef __E_BUTTON_H
 #define __E_BUTTON_H
 
@@ -15,8 +24,12 @@ typedef struct
 {
     volatile bool down;   				    //Flag to indicate button was pressed down
     volatile bool up;       				//Flag to indicate button was release
+
+    void * user;
+
     uint8_t io_port;       					//GPIO port of the button
     uint8_t io_bit;        					//GPIO bit of the button
+
     volatile uint32_t   hold_time;          //Number of ticks the butt was pressed for
     uint32_t  debounce_time_ms;            //Number of ticks for the debounce time
     volatile uint32_t debounce_timer;      //used internally for the debouncer alogirhtm
@@ -26,13 +39,13 @@ typedef struct
 
 //This is the HAL for the button.  It must be implemented by the user
 //Needs to read the port/bit and return 1 (pin high) or 0 (pin low)
-uint32_t e_button__hal_read_port_pin(uint8_t io_port, uint8_t io_bit);
+
+extern E_WEAK uint32_t e_button__hal_read_port_pin(e_button_t *button);
 
 void e_button__init(e_button_t *B,
-                 uint8_t io_port,
-                 uint8_t io_bit,
-                 uint8_t Polarity,
-                 uint8_t debounce_time_ms
+                    uint8_t Polarity,
+                    uint8_t debounce_time_ms,
+                    void * user
                  );
 
 // Computes the debounce algorithm. Must be called periodically

@@ -1,5 +1,8 @@
 #include "e_button.h"
 
+
+
+
 typedef enum
 {
     
@@ -16,34 +19,48 @@ typedef enum
 #endif
 
 void e_button__init(e_button_t *button,
-                  uint8_t io_port,
-                  uint8_t bit,
                   uint8_t polarity,
-                  uint8_t debounce_time_ms
+                  uint8_t debounce_time_ms,
+                  void *user
                   )
 {
     if(button!=NULL)
     {
-
-        button->io_port = io_port;
-        button->io_bit = bit;
+        button->user = user;
         button->polarity = polarity;
         button->debounce_time_ms = debounce_time_ms;
         button->down = 0;
         button->up = 0;
         button->hold_time = 0;
-
         button->state = BUTTON_STATE__WAIT_FOR_PRESS;
         button->debounce_timer = 0;
     }
 }
- 
+
+#ifdef __ZEPHYR__
+
+    E_WEAK uint32_t e_button__hal_read_port_pin(e_button_t *button) 
+    {
+
+        return gpio_pin_get_dt(button->user);
+
+    }
+
+#else
+
+    E_WEAK uint32_t e_button__hal_read_port_pin(e_button_t *button) 
+    {
+        return 0;
+    }
+
+#endif
+
 uint32_t e_button__hal(e_button_t *button)
 {
    uint32_t output;
    uint32_t p;
      
-   output = e_button__hal_read_port_pin(button->io_port,button->io_bit); 
+   output = e_button__hal_read_port_pin(button); 
 
    if(button->polarity == E_BUTTON__POLARITY_LOW_ACTIVE)
     {

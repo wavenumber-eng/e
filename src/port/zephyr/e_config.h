@@ -1,7 +1,7 @@
 #ifndef E__CONFIG_H_
 #define E__CONFIG_H_
 
-#define E__PORT_OPTION					E__PORT_OPTION__NXP__MCXN
+#define E__PORT_OPTION					        E__PORT_OPTION__ZEPHYR
 
 #include <e_config__port.h>
 
