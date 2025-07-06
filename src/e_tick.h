@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include <stdbool.h>
+
 #ifndef E__TICK_H_
 #define E__TICK_H_
 
