@@ -49,7 +49,9 @@ queue_result_e     bq__printf(byte_queue_t *bq, const char *format_string,...);
 									 .read_ptr=0,\
 									 .write_ptr=0,\
 								     .size = length,	\
-								     .storage = bq__##name##__storage\
+	                			     .storage = bq__##name##__storage\
 								      }
 
-#endif /* QUEUE_H_ */
+#define BQ__MAKE(name,length)       BYTE_QUEUE__MAKE(name,length)
+
+#endif

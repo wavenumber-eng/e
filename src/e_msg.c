@@ -38,7 +38,7 @@ typedef enum {
 
 
 #define MSG_HANDLER_ERR(...) E_LOG_ERR(__VA_ARGS__)
-#define CMD_HANDLER_DBG(...) E_LOG_DBG(__VA_ARGS__)
+#define MSG_HANDLER_DBG(...) E_LOG_DBG(__VA_ARGS__)
 
 
 void e_msg__init(e_msg_proc_inst_t *msi,
@@ -62,7 +62,6 @@ void e_msg__init(e_msg_proc_inst_t *msi,
 
     msi->detect_state = SCAN_HEADER_1;
     msi->last_byte_rx_time_msec = 0;
-    msi->rx_queue = rx_queue;
     msi->msg_handler = msg_handler;
     msi->user_object = user;
     msi->timeout = timeout;
@@ -73,10 +72,6 @@ void e_msg__reset(e_msg_proc_inst_t *msi)
      msi->detect_state = SCAN_HEADER_1;
 }
 
-void e_msg__feed(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
-{
-    bq__enqueue(msi->rx_queue, next_byte_in);
-}
 
 void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
 {
@@ -159,21 +154,30 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
     case SCAN_PAYLOAD_LENGTH_L:
         msi->payload_length = (uint16_t)next_byte_in;
         msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
-        msi->detect_state = SCAN_PAYLOAD;
+        msi->detect_state = SCAN_PAYLOAD_LENGTH_H;
         break;
 
     case SCAN_PAYLOAD_LENGTH_H:
         msi->payload_length |= (uint16_t)(next_byte_in)<<8;
         msi->i_payload = 0;
-        msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
-        msi->detect_state = SCAN_PAYLOAD;
+
+        if(msi->payload_length > msi->max_payload_length)
+        {
+            MSG_HANDLER_ERR("Incoming Message too large");
+            msi->detect_state = SCAN_HEADER_1;
+        }
+        else
+        {
+            msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
+            msi->detect_state = SCAN_PAYLOAD;
+        }
         break;
 
     case SCAN_PAYLOAD:
         msi->payload[msi->i_payload] = next_byte_in;
         msi->i_payload++;
         msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
-        if ((msi->i_payload >= msi->payload_length) || (msi->i_payload >= CONFIG__E_MSG_PAYLOAD_MAX_LENGTH))
+        if ((msi->i_payload >= msi->payload_length))
         {
             msi->detect_state = SCAN_CRC_1;
         }
@@ -192,7 +196,7 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
         {
             if(msi->msg_handler != NULL)
             {
-               msi->msg_handler(msi);
+               msi->msg_handler(msi->payload,msi->payload_length, msi);
             }
             else
             {
@@ -217,14 +221,6 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
     }
 }
 
-
-void e_cmd__crunch(e_msg_proc_inst_t *msi)
-{
-    while(bq__bytes_available_to_read(msi->rx_queue))
-    {
-        e_msg__process(msi, bq__dequeue_next(msi->rx_queue));
-    }
-}
 
 
 uint32_t e_msg__frame_into_q(byte_queue_t *output_queue,
