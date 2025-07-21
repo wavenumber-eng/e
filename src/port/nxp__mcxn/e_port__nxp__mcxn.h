@@ -2,6 +2,7 @@
 #ifndef E_PORT_NXP__MCXN_
 #define E_PORT_NXP__MCXN_
 
+#include "fsl_device_registers.h"
 
 #ifndef __NVIC_PRIO_BITS
 	#define __NVIC_PRIO_BITS 	3

@@ -1,5 +1,7 @@
 #include "e.h"
 
+#if E__PORT == E__PORT_OPTION__PC
+
 
 #if defined(_WIN32) || defined(_WIN64)
     #include <windows.h>
@@ -138,3 +140,5 @@ int32_t e_port__tick_hw_init()
         return -1;  // Unsupported platform
     #endif
 }
+
+#endif

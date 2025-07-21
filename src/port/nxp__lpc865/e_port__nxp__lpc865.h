@@ -1,6 +1,8 @@
 #ifndef E_PORT_NXP__LPC865_H_
 #define E_PORT_NXP__LPC865_H_
 
+#include "fsl_device_registers.h"
+
 #ifndef __NVIC_PRIO_BITS
 	#define __NVIC_PRIO_BITS 	2
 #endif

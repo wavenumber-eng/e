@@ -5,9 +5,10 @@
 
 #ifndef E__PORT
     #error "Porting layer not defined for e"
+
 #else
 
-#if E__PORT == E__PORT_OPTION__MCXN
+#if E__PORT == E__PORT_OPTION__NXP__MCXN
 
 #include <port/nxp__mcxn/e_port__nxp__mcxn.h>
 
@@ -20,11 +21,11 @@
 #include <port/rpi__rp2350/e_port__rpi_rp2350.h>
 
 
-#elif E__PORT == E__PORT_OPTION__MCXA
+#elif E__PORT == E__PORT_OPTION__NXP__MCXA
 
 #include <port/nxp__mcxa/e_port__nxp__mcxa.h>
 
-#elif E__PORT == E__PORT_OPTION__LPC865
+#elif E__PORT == E__PORT_OPTION__NXP__LPC865
 
 #include <port/nxp__lpc865/e_port__nxp__lpc865.h>
 

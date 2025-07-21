@@ -29,7 +29,9 @@
 #else
 
 #define E_LOG(...)
-
+#define E_LOG_INF(...);
+#define E_LOG_DBG(...);
+#define E_LOG_ERR(...);
 #endif
 
 

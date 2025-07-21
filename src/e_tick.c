@@ -224,7 +224,7 @@ void SysTick_Handler()
 	e_tick__irq();
 }
 
-extern void SystemCoreClockUpdate()
+extern void SystemCoreClockUpdate();
 
 extern uint32_t SystemCoreClock;
 
@@ -232,9 +232,9 @@ int32_t e_port__tick_hw_init()
 {
    SystemCoreClockUpdate(); 
    SysTick_Config((uint32_t)SystemCoreClock * (uint32_t)CONFIG__E_TICK_PERIOD__MS / 1000);
-   NVIC_SetPriority(SysTick_IRQn , CONFIG__E_TICK_IRQ_PRIORITY)\
+   NVIC_SetPriority(-1 , CONFIG__E_TICK_IRQ_PRIORITY);
 
-   return 0
+   return 0;
 }
 
 #endif
