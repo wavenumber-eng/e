@@ -2,7 +2,10 @@
 #ifndef E_PORT_NXP__MCXA_
 #define E_PORT_NXP__MCXA_
 
-#include "MCXA153.h"
+
+#ifndef __NVIC_PRIO_BITS
+	#define __NVIC_PRIO_BITS 	3
+#endif
 
 //Some systems have RAM/Flash at this location.  Pick a number that works for you...
 #define CONFIG__E_LIST_NULL			  			  (void *)0
@@ -15,10 +18,7 @@
 
 #define CONFIG__E_WFI						       __WFI()
 
-#define CONFIG__E_TICK_INIT()				       SystemCoreClockUpdate(); \
-										           SysTick_Config((uint32_t)SystemCoreClock * (uint32_t)CONFIG__E_TICK_PERIOD__MS / 1000);\
-									               NVIC_SetPriority(SysTick_IRQn , CONFIG__E_TICK_IRQ_PRIORITY)\
-
+#define CONFIG__E_USE_ARM_SYSTICK				  (1)	
 
 
 #endif

@@ -1,41 +1,76 @@
+#include "e_config__port_option.h"
+
 #ifndef E__CONFIG_H_
 #define E__CONFIG_H_
 
-#define E__PORT_OPTION					E__PORT_OPTION__ZEPHYR
+#ifndef E__PORT
+    #define E__PORT				                (@E__PORT@)
+#endif
 
 #include <e_config__port.h>
 
-#define CONFIG__E_FOREGROUND_TRIGGER_CHECK_INTERVAL (CONFIG__E_TICK_PERIOD__MS)
+#ifndef CONFIG__E_FOREGROUND_TRIGGER_CHECK_INTERVAL_MS
+    #define CONFIG__E_FOREGROUND_TRIGGER_CHECK_INTERVAL_MS (@CONFIG__E_FOREGROUND_TRIGGER_CHECK_INTERVAL_MS@)
+#endif
 
-#define CONFIG__E_BQ_MAX_PRINTF_LEN				   (64)
+#ifndef CONFIG__E_BQ_MAX_PRINTF_LEN
+    #define CONFIG__E_BQ_MAX_PRINTF_LEN				   (@CONFIG__E_BQ_MAX_PRINTF_LEN@)
+#endif
 
-#define CONFIG__E_VT100__ENABLE                    (1)
+#ifndef CONFIG__E_VT100__ENABLE
+    #define CONFIG__E_VT100__ENABLE                    (@CONFIG__E_VT100__ENABLE@)
+#endif
 
-#define CONFIG__E_VT100_DEFAULT_COLOR               E_VT100__WHITE
+#ifndef CONFIG__E_VT100_DEFAULT_COLOR
+    #define CONFIG__E_VT100_DEFAULT_COLOR              (@CONFIG__E_VT100_DEFAULT_COLOR@)
+#endif
 
-#define CONFIG__E_LOG__ENABLE					   (0)
+#ifndef CONFIG__E_LOG__ENABLE
+    #define CONFIG__E_LOG__ENABLE					   (@CONFIG__E_LOG__ENABLE@)
+#endif
 
-#define CONFIG__E_LOG__RTT_ENABLE				   (0)
+#ifndef CONFIG__E_LOG__RTT_ENABLE
+    #define CONFIG__E_LOG__RTT_ENABLE				   (@CONFIG__E_LOG__RTT_ENABLE@)
+#endif
 
-#define CONFIG__E_LOG__RTT_TX_BUFFER_SIZE          (4096)
+#ifndef CONFIG__E_LOG__RTT_TX_BUFFER_SIZE
+    #define CONFIG__E_LOG__RTT_TX_BUFFER_SIZE          (@CONFIG__E_LOG__RTT_TX_BUFFER_SIZE@)
+#endif
 
-#define CONFIG__E_SHELL__ENABLE			    	   (0)
+#ifndef CONFIG__E_SHELL__ENABLE
+    #define CONFIG__E_SHELL__ENABLE			    	   (@CONFIG__E_SHELL__ENABLE@)
+#endif
 
-#define CONFIG__E_SHELL_PRINTF_MAX_LEN      	   (256U)
+#ifndef CONFIG__E_SHELL_PRINTF_MAX_LEN
+    #define CONFIG__E_SHELL_PRINTF_MAX_LEN      	   (@CONFIG__E_SHELL_PRINTF_MAX_LEN@U)
+#endif
 
-#define CONFIG__E_SHELL_USE_HISTORY 			   (0U)
+#ifndef CONFIG__E_SHELL_USE_HISTORY
+    #define CONFIG__E_SHELL_USE_HISTORY 			   (@CONFIG__E_SHELL_USE_HISTORY@U)
+#endif
 
-#define CONFIG__E_SHELL_SEARCH_IN_HIST 			   (1U)
+#ifndef CONFIG__E_SHELL_SEARCH_IN_HIST
+    #define CONFIG__E_SHELL_SEARCH_IN_HIST 			   (@CONFIG__E_SHELL_SEARCH_IN_HIST@U)
+#endif
 
-#define CONFIG__E_SHELL_AUTO_COMPLETE 			   (1U)
+#ifndef CONFIG__E_SHELL_AUTO_COMPLETE
+    #define CONFIG__E_SHELL_AUTO_COMPLETE 			   (@CONFIG__E_SHELL_AUTO_COMPLETE@U)
+#endif
 
-#define CONFIG__E_SHELL_BUFFER_SIZE 			   (64)
+#ifndef CONFIG__E_SHELL_BUFFER_SIZE
+    #define CONFIG__E_SHELL_BUFFER_SIZE 			   (@CONFIG__E_SHELL_BUFFER_SIZE@)
+#endif
 
-#define CONFIG__E_SHELL_MAX_ARGS 				   (8U)
+#ifndef CONFIG__E_SHELL_MAX_ARGS
+    #define CONFIG__E_SHELL_MAX_ARGS 				   (@CONFIG__E_SHELL_MAX_ARGS@U)
+#endif
 
-#define CONFIG__E_SHELL_HIST_MAX 				   (4U)
+#ifndef CONFIG__E_SHELL_HIST_MAX
+    #define CONFIG__E_SHELL_HIST_MAX 				   (@CONFIG__E_SHELL_HIST_MAX@U)
+#endif
 
-#define CONFIG__E_SHELL_MAX_CMD					   (16)
-
+#ifndef CONFIG__E_SHELL_MAX_CMD
+    #define CONFIG__E_SHELL_MAX_CMD					   (@CONFIG__E_SHELL_MAX_CMD@)
+#endif
 
 #endif

@@ -36,6 +36,10 @@ void e_tick__init();
 
 void e_tick__crunch();
 
+//Called by the tick hw
+void e_tick__irq();
 
+//Supplied by the port hw tick driver
+int32_t e_port__tick_hw_init();
 
 #endif /* SYSTEM__TICK_H_ */

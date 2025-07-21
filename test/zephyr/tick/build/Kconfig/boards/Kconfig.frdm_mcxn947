@@ -1,0 +1,2 @@
+# Load board Kconfig descriptions.
+osource "C:/ELI/projects/playpower/crickets/firmware/zephyr/boards/nxp/frdm_mcxn947/Kconfig.frdm_mcxn947"

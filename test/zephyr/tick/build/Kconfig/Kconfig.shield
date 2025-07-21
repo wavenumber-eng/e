@@ -1,0 +1,2 @@
+osource "C:/ELI/projects/playpower/crickets/firmware/CricketNode/boards/shields/*/Kconfig.shield"
+osource "C:/ELI/projects/playpower/crickets/firmware/monkey-boot/boards/shields/*/Kconfig.shield"

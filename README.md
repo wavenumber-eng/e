@@ -1,6 +1,4 @@
 
-**WORK IN PROGRESS**
-
 # e for embedded
 
 Wavenumber core embedded utilities for baremetal and rtos.   The initial focus is bare metal to have some simple utilities.
@@ -17,9 +15,11 @@ Most embedded applications need the same "stuff".   e is the skeleton of the "st
 
 Covers the basics of being able to read a timer,  check a timeout.   there is a simple mechanism to add functions to a list that get call periodically in a main loop or in an isr context
 
+currently focus on simple 1msec ticks w/ 32-bit atomic read for basic task scheduling.
+
 ### e_queue
 
-A simple byte queue for single producer, single consumder
+A simple byte queue for single producer, single consumer
 
 ### e_state
 
@@ -29,14 +29,36 @@ A simple statemachine framework.
 
 ## Zephyr
 
-Broken... Not yet working
-
-need to get infrastructure setup with some kconfig options to get things to build.
+get infrastructure setup with some kconfig options to get things to build.
 
 ## Ports
 
 ## Bare Metal
 
 MCXA and MCXN is working.
+
+## directory struct
+
+### cmake
+
+This has some of the helper cmake files, etc
+
+### lib/zephyr
+
+Zephyr specific module setups
+
+### src
+
+The core .c/.h files
+
+### test
+
+Test projects.  Current have 1 project for zephyr tick.   Will add unity tests, etc.
+
+### zephyr
+
+This has the module.yml for pointing zephyr
+
+
 
 

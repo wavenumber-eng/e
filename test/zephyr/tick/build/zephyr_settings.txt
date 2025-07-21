@@ -1,0 +1,20 @@
+# WARNING. THIS FILE IS AUTO-GENERATED. DO NOT MODIFY!
+#
+# This file contains build system settings derived from your modules.
+#
+# Modules may be set via ZEPHYR_MODULES, ZEPHYR_EXTRA_MODULES,
+# and/or the west manifest file.
+#
+# See the Modules guide for more information.
+"BOARD_ROOT":"C:/ELI/projects/playpower/crickets/firmware/CricketNode"
+"DTS_ROOT":"C:/ELI/projects/playpower/crickets/firmware/CricketNode"
+"BOARD_ROOT":"C:/ELI/projects/playpower/crickets/firmware/monkey-boot"
+"DTS_ROOT":"C:/ELI/projects/playpower/crickets/firmware/monkey-boot"
+"DTS_ROOT":"C:/ELI/projects/playpower/crickets/firmware/modules/hal/adi"
+"DTS_ROOT":"C:/ELI/projects/playpower/crickets/firmware/modules/hal/atmel"
+"DTS_ROOT":"C:/ELI/projects/playpower/crickets/firmware/modules/hal/espressif"
+"DTS_ROOT":"C:/ELI/projects/playpower/crickets/firmware/modules/hal/gigadevice"
+"DTS_ROOT":"C:/ELI/projects/playpower/crickets/firmware/modules/hal/microchip"
+"DTS_ROOT":"C:/ELI/projects/playpower/crickets/firmware/modules/hal/nuvoton"
+"DTS_ROOT":"C:/ELI/projects/playpower/crickets/firmware/modules/hal/nxp"
+"DTS_ROOT":"C:/ELI/projects/playpower/crickets/firmware/modules/hal/stm32"

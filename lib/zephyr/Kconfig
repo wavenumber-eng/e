@@ -1,0 +1,27 @@
+# Copyright (c) 2021 Legrand North America, LLC.
+# SPDX-License-Identifier: Apache-2.0
+
+menu "e"
+
+config _E
+	bool "Enable E for embedded"
+
+
+config _E_BQ_MAX_PRINTF_LEN
+	int "Maximum BQ printf length"
+	depends on _E
+	default 128
+	range 32 1024
+	help
+	  Maximum length for BQ printf operations. This value determines
+	  the buffer size allocated for formatted output operations.  This buffer is placed on the stack
+
+config _E_TICK_THREAD_STACK_SIZE
+	int "stack size of the e tick thread"
+	depends on _E
+	default 2048
+	range 512 65536
+	help
+		stack size of the e tick threa
+endmenu
+

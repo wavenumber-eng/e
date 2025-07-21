@@ -1,0 +1,53 @@
+cmake:
+  application:
+    configuration-dir: C:/ELI/projects/playpower/crickets/firmware/e/test/zephyr/tick
+    source-dir: C:/ELI/projects/playpower/crickets/firmware/e/test/zephyr/tick
+  board:
+    name: frdm_mcxn947
+    path:
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/boards/nxp/frdm_mcxn947
+    qualifiers: mcxn947/cpu0
+    revision: 
+  devicetree:
+    bindings-dirs:
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/bindings
+    files:
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/boards/nxp/frdm_mcxn947/frdm_mcxn947_mcxn947_cpu0.dts
+    include-dirs:
+     - C:/ELI/projects/playpower/crickets/firmware/modules/hal/atmel/include
+     - C:/ELI/projects/playpower/crickets/firmware/modules/hal/gigadevice/include
+     - C:/ELI/projects/playpower/crickets/firmware/modules/hal/microchip/include
+     - C:/ELI/projects/playpower/crickets/firmware/modules/hal/microchip/dts
+     - C:/ELI/projects/playpower/crickets/firmware/modules/hal/nuvoton/dts
+     - C:/ELI/projects/playpower/crickets/firmware/modules/hal/nxp/dts
+     - C:/ELI/projects/playpower/crickets/firmware/modules/hal/stm32/dts
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/include
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/include/zephyr
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/common
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/x86
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/xtensa
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/sparc
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/riscv
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/posix
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/nios2
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/arm64
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/arm
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts/arc
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/dts
+  kconfig:
+    files:
+     - C:/ELI/projects/playpower/crickets/firmware/zephyr/boards/nxp/frdm_mcxn947/frdm_mcxn947_mcxn947_cpu0_defconfig
+     - C:/ELI/projects/playpower/crickets/firmware/e/test/zephyr/tick/prj.conf
+    user-files:
+     - C:/ELI/projects/playpower/crickets/firmware/e/test/zephyr/tick/prj.conf
+  toolchain:
+    name: zephyr
+    path: C:/Users/EliHughes/zephyr-sdk-0.17.0
+  zephyr:
+    version: 4.1.0-rc1
+    zephyr-base: C:/ELI/projects/playpower/crickets/firmware/zephyr
+version: 0.1.0
+west:
+  command: C:\python_3_13_3\Scripts\west build -bfrdm_mcxn947/mcxn947/cpu0 --pristine
+  topdir: C:\ELI\projects\playpower\crickets\firmware
+  version: 1.4.0

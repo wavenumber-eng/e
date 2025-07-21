@@ -1,0 +1,1 @@
+"mcuboot":"C:/ELI/projects/playpower/crickets/firmware/bootloader/mcuboot":"C:/ELI/projects/playpower/crickets/firmware/bootloader/mcuboot/boot/zephyr/sysbuild"

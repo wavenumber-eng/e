@@ -3,12 +3,10 @@
 #include "stddef.h"
 #include "stdbool.h"
 #include "stdarg.h"
-
-#ifndef __ZEPHYR__
-    #include "e_config.h"
-#endif
-
+#include "e_config__port_option.h"
+#include "e_config.h"
 #include "e_vt100.h"
+#include "e_shell.h"
 #include "e_debug.h"
 #include "e_queue.h"
 #include "e_tick.h"

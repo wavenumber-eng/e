@@ -5,14 +5,8 @@
 #include "stdint.h"
 #include "stdbool.h"
 #include "e_config.h"
+#include "e_queue.h"
 
-#if CONFIG__E_SHELL__ENABLE != 0
-typedef enum _fun_key_status
-{
-    kSHELL_Normal = 0U,   /*!< Normal key */
-    kSHELL_Special = 1U,  /*!< Special key */
-    kSHELL_Function = 2U, /*!< Function key */
-} fun_key_status_t;
 
 
 typedef struct _shell_command_context  _shell_command_context_t;
@@ -35,6 +29,14 @@ typedef struct _shell_command_context_list
     e_shell__command_context_t CommandList[CONFIG__E_SHELL_MAX_CMD]; /*!< The command table list */
     uint8_t numberOfCommandInList;                             /*!< The total command in list */
 } e_shell__command_context_list_t;
+
+typedef enum _fun_key_status
+{
+    kSHELL_Normal = 0U,   /*!< Normal key */
+    kSHELL_Special = 1U,  /*!< Special key */
+    kSHELL_Function = 2U, /*!< Function key */
+} fun_key_status_t;
+
 
 typedef struct _shell_context_struct
 {
@@ -81,7 +83,6 @@ void e_shell__crunch(e_shell__context_t shell);
 cmd_function_t shell__help_handler(e_shell__context_t shell, int32_t argc, char **argv);
 
 
-#endif
 
 #if defined(__cplusplus)
 }

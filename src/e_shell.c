@@ -1,3 +1,6 @@
+
+#if CONFIG__E_SHELL__ENABLE == 1
+
 #include "string.h"
 #include "stdbool.h"
 #include "stdarg.h"
@@ -34,7 +37,6 @@
 #ifndef CONFIG__E_SHELL_MAX_CMD
 	#define CONFIG__E_SHELL_MAX_CMD (32)
 #endif
-
 
 
 #define KEY_ESC (0x1BU)
@@ -569,3 +571,4 @@ cmd_function_t shell__help_handler(e_shell__context_t shell, int32_t argc, char 
     return 0;
 }
 
+#endif
