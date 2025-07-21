@@ -1,2 +1,0 @@
-# Load Zephyr board defconfig descriptions.
-osource "C:/ELI/projects/playpower/crickets/firmware/zephyr/boards/nxp/frdm_mcxn947/Kconfig.defconfig"
