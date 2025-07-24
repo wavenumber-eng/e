@@ -12,7 +12,7 @@
 
 
 typedef struct e_msg_proc_inst e_msg_proc_inst_t;
-typedef void (*e_msg_handler_t)(uint8_t * payload, uint8_t length, e_msg_proc_inst_t *);
+typedef void (*e_msg_handler_t)(uint8_t * payload, uint16_t length, e_msg_proc_inst_t *);
 
 typedef struct e_msg_proc_inst
 {
