@@ -10,6 +10,7 @@ typedef enum
 }e_state_e;
 
 typedef struct e_state_machine e_state_machine_t;
+typedef e_state_machine_t e_sm_t;
 
 typedef int32_t (*e_state_function_t)(e_state_machine_t *);
 typedef bool (*e_state_transition_function_t)(e_state_machine_t *,int32_t);
