@@ -1,7 +1,7 @@
 #ifndef __E_VT100_H__
 #define __E_VT100_H__
 
-#if     CONFIG__E_VT100__ENABLE == (1)
+#if CONFIG__E_VT100__ENABLE == (1)
 
     #define E_VT100__ESC 					"\x1b"
     #define E_VT100__CSI 					"\x1b["
@@ -19,7 +19,7 @@
     #define E_VT100__CLEAR_LINE			     E_VT100__CSI"2K"
     #define E_VT100__MOVE_CURSOR_START	     E_VT100__CSI"1G"
     #define E_VT100__MOVE_CURSOR_TO_COLUMN   E_VT100__CSI"%dG"
-
+    #define E_VT100__RESET                   E_VT100__CSI "0m"
 
 #ifndef CONFIG__E_VT100_DEFAULT_COLOR
     #define E_VT100__DEFAULT                 E_VT100__WHITE

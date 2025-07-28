@@ -4,6 +4,12 @@
 #ifndef E__TICK_H_
 #define E__TICK_H_
 
+#ifdef __cplusplus
+
+extern "C"
+{
+#endif
+
 uint32_t e_tick__get_ms();
 
 void e_tick__delay_ms(uint32_t delay_ms);
@@ -41,5 +47,9 @@ void e_tick__irq();
 
 //Supplied by the port hw tick driver
 int32_t e_port__tick_hw_init();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* SYSTEM__TICK_H_ */

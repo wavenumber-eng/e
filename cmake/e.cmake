@@ -10,7 +10,7 @@ macro(e_config__set_defaults)
     set_default(CONFIG__E_VT100__ENABLE 1)
     set_default(CONFIG__E_VT100_DEFAULT_COLOR "E_VT100__WHITE")
     set_default(CONFIG__E_LOG__ENABLE 0)
-    set_default(CONFIG__E_LOG__RTT_ENABLE 0)
+    set_default(CONFIG__E_LOG__RTT_ENABLE 1)
     set_default(CONFIG__E_LOG__RTT_TX_BUFFER_SIZE 0)
     set_default(CONFIG__E_SHELL__ENABLE 0)
     set_default(CONFIG__E_SHELL_PRINTF_MAX_LEN 0)
@@ -35,6 +35,7 @@ function(e__get_core_src output_var e_base_dir)
         "${E_SRC_DIR}/e_shell.c"
         "${E_SRC_DIR}/e_tick.c"
         "${E_SRC_DIR}/e_util.c"
+        "${E_SRC_DIR}/external/rtt/SEGGER_RTT_printf.c"
     )
     
     set(${output_var} ${CORE_SOURCES} PARENT_SCOPE)

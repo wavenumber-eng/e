@@ -18,18 +18,36 @@
 
 #define E__INTERFACE__VERSION  0x0001
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 void 	e__init();
 void 	e__crunch();
+
+#ifdef __cplusplus
+}
+#endif
 
 #if CONFIG__E_SHELL__ENABLE != 0
 
     #include "e_shell.h"
 
+    #ifdef __cplusplus
+    extern "C"
+    {
+    #endif
     void e__register_system_shell(e_shell__context_t shell);
 
 	e_shell__context_t e__get_system_shell();
 
+    #ifdef __cplusplus
+    }
+    #endif
+
+#endif
+
 #endif
 
 
-#endif /* SYSTEM_H_ */

@@ -6,6 +6,13 @@
 #ifndef _E_QUEUE_H_
 #define _E_QUEUE_H_
 
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 typedef void (*bq_hook_t)(void *arg);
 
 typedef struct
@@ -55,5 +62,10 @@ queue_result_e bq__printf(byte_queue_t *bq, const char *format_string, ...);
 #define E_BQ_QUEUE__MAKE BYTE_QUEUE__MAKE
 
 #define BQ__MAKE(name, length) BYTE_QUEUE__MAKE(name, length)
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

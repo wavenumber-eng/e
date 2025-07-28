@@ -7,6 +7,10 @@
 #include "e_config.h"
 #include "e_queue.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 
 typedef struct _shell_command_context  _shell_command_context_t;
@@ -64,11 +68,6 @@ typedef struct _shell_context_struct
 
 } e_shell__context_struct, *e_shell__context_t;
 
-
-#if defined(__cplusplus)
-extern "C" {
-#endif /* _cplusplus */
-
 int32_t e_shell__register_cmd(e_shell__context_t shell,
                               char *command,
 							  char *help_string,
@@ -83,11 +82,9 @@ void e_shell__crunch(e_shell__context_t shell);
 cmd_function_t shell__help_handler(e_shell__context_t shell, int32_t argc, char **argv);
 
 
-
 #if defined(__cplusplus)
 }
 #endif
 
-/*! @}*/
 
-#endif /* _FSL_SHELL_H_ */
+#endif 

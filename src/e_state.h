@@ -1,5 +1,13 @@
+#include "stdint.h"
+#include "stdbool.h"
+
 #ifndef E_STATE_H_
 #define E_STATE_H_
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 typedef enum
 {
@@ -18,7 +26,7 @@ typedef bool (*e_state_transition_function_t)(e_state_machine_t *,int32_t);
 typedef struct e_state_table_entry
 {
 	e_state_function_t state_function;
-	char * description;
+	const char * description;
 } e_state_table_entry_t;
 
 typedef struct e_state_machine
@@ -60,5 +68,8 @@ void e_state__delayed_transition(e_state_machine_t * sm,
 void e_state__wait(e_state_machine_t * sm,
 				  uint32_t ms_to_wait);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* E_STATE_H_ */

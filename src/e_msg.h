@@ -6,10 +6,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+
 #ifndef CONFIG__MSG_HANDLER_DEFAULT_TIMEOUT
     #define CONFIG__MSG_HANDLER_DEFAULT_TIMEOUT     100
 #endif
 
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 typedef struct e_msg_proc_inst e_msg_proc_inst_t;
 typedef void (*e_msg_handler_t)(uint8_t * payload, uint16_t length, e_msg_proc_inst_t *);
@@ -38,8 +44,6 @@ typedef struct e_msg_proc_inst
                                               .msg_handler=handler\
                                               }
 
-
-
 void e_msg__init(e_msg_proc_inst_t *msi,
                  byte_queue_t * rx_queue,
                  e_msg_handler_t msg_handler,
@@ -47,11 +51,19 @@ void e_msg__init(e_msg_proc_inst_t *msi,
                  void * user);
 
 extern void e_msg__reset(e_msg_proc_inst_t * msi);
+
 extern void e_msg__crunch(e_msg_proc_inst_t *msi);
+
 extern void e_msg__feed(e_msg_proc_inst_t *msi, uint8_t next_byte_in);
+
 void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in);
+
 uint32_t e_msg__frame_into_q(byte_queue_t *output_queue,
                           uint8_t *payload,
                           uint8_t payload_length);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* E_SRC_E_MSG_H_ */

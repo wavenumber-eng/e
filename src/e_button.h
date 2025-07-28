@@ -14,6 +14,11 @@
 #ifndef __E_BUTTON_H
 #define __E_BUTTON_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #define E_BUTTON__POLARITY_LOW_ACTIVE                            (0)
 #define E_BUTTON__POLARITY_HIGH_ACTIVE                           (1)
 
@@ -76,5 +81,9 @@ void e_button__reset_state (e_button_t *B);
 
 //return to get the instantaneous state of the button through the hal layer
 uint32_t e_button__hal(e_button_t *B);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

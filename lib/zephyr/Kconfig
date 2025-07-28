@@ -6,6 +6,10 @@ menu "e"
 config _E
 	bool "Enable E for embedded"
 
+config _E_VT100__ENABLE
+	default n
+	bool "Enables VT100 macro expansions for shell colors, etc"
+
 
 config _E_BQ_MAX_PRINTF_LEN
 	int "Maximum BQ printf length"

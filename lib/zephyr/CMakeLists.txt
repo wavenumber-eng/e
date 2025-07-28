@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 
-zephyr_library()
-
 if(CONFIG__E)
   
+    zephyr_library()
+
     set(E_BASE_DIR "${CMAKE_CURRENT_LIST_DIR}/../../")
     set(E_SRC_DIR "${E_BASE_DIR}/src/")
        
