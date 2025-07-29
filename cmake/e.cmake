@@ -35,6 +35,7 @@ function(e__get_core_src output_var e_base_dir)
         "${E_SRC_DIR}/e_shell.c"
         "${E_SRC_DIR}/e_tick.c"
         "${E_SRC_DIR}/e_util.c"
+        "${E_SRC_DIR}/e_msg.c"
         "${E_SRC_DIR}/external/rtt/SEGGER_RTT_printf.c"
     )
     

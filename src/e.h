@@ -12,6 +12,7 @@
 #include "e_tick.h"
 #include "e_state.h"
 #include "e_button.h"
+#include "e_msg.h"
 
 #ifndef __E_H__
 #define __E_H__
