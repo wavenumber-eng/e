@@ -26,6 +26,28 @@ config _E_TICK_THREAD_STACK_SIZE
 	default 2048
 	range 512 65536
 	help
-		stack size of the e tick threa
+		stack size of the e tick thread
+
+config _E_LOG__ENABLE
+	bool "enable e logging"
+	default n
+	depends on _E
+	help
+		enable e logging
+
+config _E_LOG__RTT_ENABLE
+	bool "enable e logging"
+	default n
+	depends on _E_LOG__ENABLE
+	help
+		enable e logging
+
+config _E_LOG__RTT_TX_BUFFER_SIZE
+	int "enable e logging"
+	depends on _E_LOG__RTT_ENABLE
+	default 2048
+	help
+		enable e logging
+
 endmenu
 

@@ -225,8 +225,6 @@ Additional information:
   #define SEGGER_RTT_PUT_SECTION(Var, Section) Var
 #endif
 
-#include <cr_section_macros.h>
-
 
 #if SEGGER_RTT_ALIGNMENT
   #define SEGGER_RTT_CB_ALIGN(Var)  SEGGER_RTT_ALIGN(Var, SEGGER_RTT_ALIGNMENT)
@@ -244,13 +242,13 @@ Additional information:
 #if defined(SEGGER_RTT_SECTION)
   #define SEGGER_RTT_PUT_CB_SECTION(Var) SEGGER_RTT_PUT_SECTION(Var, SEGGER_RTT_SECTION)
 #else
-  #define SEGGER_RTT_PUT_CB_SECTION(Var) __BSS(SRAM4) Var
+  #define SEGGER_RTT_PUT_CB_SECTION(Var)  Var
 #endif
 
 #if defined(SEGGER_RTT_BUFFER_SECTION)
   #define SEGGER_RTT_PUT_BUFFER_SECTION(Var) SEGGER_RTT_PUT_SECTION(Var, SEGGER_RTT_BUFFER_SECTION)
 #else
-  #define SEGGER_RTT_PUT_BUFFER_SECTION(Var) __BSS(SRAM4) Var
+  #define SEGGER_RTT_PUT_BUFFER_SECTION(Var)  Var
 #endif
 
 /*********************************************************************
