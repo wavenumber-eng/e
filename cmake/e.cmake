@@ -31,7 +31,7 @@ function(e__get_core_src output_var e_base_dir)
         "${E_SRC_DIR}/e_tick.c"        
         "${E_SRC_DIR}/e_queue.c"
         "${E_SRC_DIR}/e_state.c"
-        "${E_SRC_DIR}/e_button.c"
+        "${E_SRC_DIR}/e_btn.c"
         "${E_SRC_DIR}/e_shell.c"
         "${E_SRC_DIR}/e_util.c"
         "${E_SRC_DIR}/e_msg.c"

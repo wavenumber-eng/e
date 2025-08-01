@@ -11,7 +11,7 @@
 #include "e_queue.h"
 #include "e_tick.h"
 #include "e_state.h"
-#include "e_button.h"
+#include "e_btn.h"
 #include "e_msg.h"
 
 #ifndef __E_H__
