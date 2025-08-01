@@ -17,7 +17,9 @@ struct repeating_timer timer;
 
 int32_t e_port__tick_hw_init()
 {
-    add_repeating_timer_ms(1, repeating_timer_callback, NULL, &timer);
+    //alarm_pool_t *pool = alarm_pool_create(2, 1);
+
+    add_repeating_timer_ms(-1, repeating_timer_callback, NULL, &timer);
     return 0;
 }
 

@@ -39,6 +39,7 @@ typedef bool (*e_btn_down_t)(struct e_btn *button);
 
 typedef struct e_btn
 {
+    void *next;                             //For a linked list.
     volatile bool down;                     //Flag to indicate button was pressed down. Set only if there isn't a callback registered
     volatile bool up;                       //Flag to indicate button was release et only if there isn't a callback registered
     e_btn_down_t down_cb;                   //If this is populated, you get callback, else the down flag is set
@@ -91,6 +92,7 @@ uint32_t e_btn__get_current_hold_time(e_btn_t *btn);
 //resets the button state and waits for a release (button up but generates no up or down code)
 void e_btn__reset_state (e_btn_t *btn);
 
+bool e_btn__add_to_list(e_btn_t *btn_list,e_btn_t *btn);
 
 #ifdef __cplusplus
 }

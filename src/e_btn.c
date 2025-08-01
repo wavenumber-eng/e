@@ -4,6 +4,8 @@
     #define NULL 0
 #endif
 
+#define E_BTN_DBG(...)
+
 void e_btn__init(e_btn_t *btn,
                     uint8_t debounce_time_ms,
                     e_btn_read_t read
@@ -20,13 +22,50 @@ void e_btn__init(e_btn_t *btn,
     }
 }
 
-void e_btn__crunch(e_btn_t *btn, uint32_t process_time_ms)
+
+bool e_btn__add_to_list(e_btn_t *btn_list,e_btn_t *btn)
+{
+    if(btn_list == btn)
+    {
+        //we can't add to ourselves
+        E_BTN_DBG("We add a btn to ourselves");
+        return false;
+    }
+    if(btn_list==NULL)
+    {
+        E_BTN_DBG("btn_list is null.");
+        return false;
+    }
+    if(btn==NULL)
+    {
+        E_BTN_DBG("btn is null.  Cannot add to list.");
+        return false;
+    }
+
+    while(btn_list->next != NULL)
+    {
+        if(btn_list->next == btn_list)
+        {
+            //trap the case where we might loop back
+            E_BTN_DBG("Circular loop found in list. Breaking here");
+            break;
+        }
+        btn_list = btn_list->next;
+    }
+
+    btn_list->next = btn;
+ 
+    return true;
+}
+
+
+void e_btn__crunch_internal(e_btn_t *btn, uint32_t process_time_ms)
 {
     if(btn == NULL)
     {
         return;
     }
-    
+   
     if(btn->read == NULL)
     {
         return;
@@ -139,6 +178,17 @@ void e_btn__crunch(e_btn_t *btn, uint32_t process_time_ms)
     }
 
 }
+
+
+void e_btn__crunch(e_btn_t *btn, uint32_t process_time_ms)
+{
+    while(btn!=NULL)
+    {
+        e_btn__crunch_internal(btn,process_time_ms);
+        btn=btn->next;
+    }
+ }
+
 
 uint32_t e_btn__is_active(e_btn_t *btn)
 {
