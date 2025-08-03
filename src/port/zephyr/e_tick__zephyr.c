@@ -5,6 +5,11 @@
 #include <zephyr/kernel.h>
 #include <zephyr/init.h>
 
+void e_tick__init()
+{
+
+}
+
 uint32_t e_tick__get_ms()
 {
     return k_uptime_get_32();

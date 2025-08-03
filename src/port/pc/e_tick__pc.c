@@ -10,9 +10,9 @@
     #include <sys/time.h>
 #endif
 
-int32_t e_port__tick_init()
+void e_tick__init()
 {
-    return 0;
+
 }
 
 uint32_t e_tick__get_ms()

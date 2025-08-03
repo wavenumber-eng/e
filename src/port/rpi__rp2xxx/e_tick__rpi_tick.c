@@ -4,7 +4,7 @@
 
 #include "pico/stdlib.h"
 
-int32_t e_port__tick_init()
+void e_tick__init()
 {
    return 0;
 }

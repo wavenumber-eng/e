@@ -20,7 +20,7 @@ e_shell__context_t e__get_system_shell()
 int e__init()
 {
 	//Supplied by the port hw tick driver
-	#if E__PORT__HAS_TICK_DRIVER == 1
+	#if E__PORT__HAS_TICK == 1
 		e_tick__init();
 	#endif
 

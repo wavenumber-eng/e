@@ -21,18 +21,18 @@ static volatile uint32_t e__ms_ticker;
 void SysTick_Handler()
 {
 	e__delay_ticker++;
-    e__ms_ticker++
+    e__ms_ticker++;
 }
 
 extern void SystemCoreClockUpdate();
 
 extern uint32_t SystemCoreClock;
 
-int32_t e_port__tick_init()
+void e_tick__init()
 {
    SystemCoreClockUpdate(); 
  
-   SysTick_Config((uint64_t)SystemCoreClock * (uint64_t)CONFIG__E_TICK__ARM_SYSTICK_PERIOD__MS) / 1000);
+   SysTick_Config(((uint64_t)SystemCoreClock * (uint64_t)CONFIG__E_TICK__ARM_SYSTICK_PERIOD__MS) / 1000);
  
    NVIC_SetPriority(-1 , CONFIG__E_TICK__ARM_SYSTICK_IRQ_PRIORITY);
  

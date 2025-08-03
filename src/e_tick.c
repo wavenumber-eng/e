@@ -18,6 +18,12 @@
 
 static volatile uint32_t e__skeleton_ms_ticker;
 
+void e_tick__init()
+{
+
+}
+
+
 uint32_t e_tick__get_ms()
 {
     return e__skeleton_ms_ticker++;
