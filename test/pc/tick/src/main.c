@@ -24,7 +24,7 @@ int main(void)
         {
             e_tick__delay_ms(1000);
             
-            printk("hello delay %d\r\n",count++);
+            printf("hello delay %d\r\n",count++);
            
             if(count >= 6)
             {
@@ -32,6 +32,6 @@ int main(void)
                 count =0;
             }
         }  
-        k_sleep(K_MSEC(10));
+     
     }
 }

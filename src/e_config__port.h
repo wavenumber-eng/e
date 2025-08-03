@@ -42,6 +42,11 @@
 
         #include <port/nxp__lpc865/e_port__nxp__lpc865.h>
 
+   
+    #elif E__PORT == E__PORT_OPTION__PC
+
+         #include <port/pc/e_port__pc.h>
+
     #endif
        
 

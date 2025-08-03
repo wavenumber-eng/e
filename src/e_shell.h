@@ -1,11 +1,15 @@
 #ifndef _E__SHELL_H_
 #define _E__SHELL_H_
 
+#if CONFIG__E_SHELL__ENABLE == 1
 
 #include "stdint.h"
 #include "stdbool.h"
 #include "e_config.h"
 #include "e_queue.h"
+
+
+
 
 #ifdef __cplusplus
 extern "C"
@@ -84,6 +88,8 @@ cmd_function_t shell__help_handler(e_shell__context_t shell, int32_t argc, char 
 
 #if defined(__cplusplus)
 }
+#endif
+
 #endif
 
 

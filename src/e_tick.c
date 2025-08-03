@@ -5,7 +5,7 @@
 	#define E__USE_SKELETON_TICK 
 #else
 	#ifndef E__PORT__HAS_TICK
-		#warning "This port has no tick driver. Implement tick functions in e_tick_drv_if.h and define E__PORT__HAS_TICK"
+		//#warning "This port has no tick driver. Implement tick functions in e_tick_drv_if.h and define E__PORT__HAS_TICK"
 		#define E__USE_SKELETON_TICK
 	#endif
 #endif
