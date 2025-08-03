@@ -2,14 +2,8 @@
 #include "stdint.h"
 #include "stdbool.h"
 
-
-#ifndef E_WEAK
-    #define E_WEAK __attribute__((weak))
-#endif
-
-
-#ifndef __E_BUTTON_H
-#define __E_BUTTON_H
+#ifndef __E_BTN_H
+#define __E_BTN_H
 
 #ifdef __cplusplus
 extern "C"
@@ -22,9 +16,9 @@ typedef enum
     
     BTN_STATE__WAIT_FOR_PRESS                        =     0,
     BTN_STATE__WAIT_FOR_WAIT_FOR_PRESS_STABLE        =     1,
-    BTN_STATE__WAIT_FOR_RELEASE                      =      2,
-    BTN_STATE__WAIT_FOR_STABLE                       =      3,
-    BTN_STATE__WAIT_FOR_STABLE_GENERATE_NO_CODES     =      4
+    BTN_STATE__WAIT_FOR_RELEASE                      =     2,
+    BTN_STATE__WAIT_FOR_STABLE                       =     3,
+    BTN_STATE__WAIT_FOR_STABLE_GENERATE_NO_CODES     =     4
 
 } e_btn_state_e;
 
@@ -39,7 +33,7 @@ typedef bool (*e_btn_down_t)(struct e_btn *button);
 
 typedef struct e_btn
 {
-    void *next;                             //For a linked list.
+    struct e_btn *next;                             //For a linked list.
     volatile bool down;                     //Flag to indicate button was pressed down. Set only if there isn't a callback registered
     volatile bool up;                       //Flag to indicate button was release et only if there isn't a callback registered
     e_btn_down_t down_cb;                   //If this is populated, you get callback, else the down flag is set

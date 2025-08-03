@@ -9,6 +9,14 @@
 #define E__PORT_OPTION__NXP__MCXA   (0x1000)
 #define E__PORT_OPTION__NXP__MCXN   (0x1100)
 #define E__PORT_OPTION__NXP__LPC865 (0x1200)
-#define E__PORT_OPTION__RPI__RP2350 (0x2000)
+
+#define E__PORT_OPTION__RPI__RP2XXX (0x2000)
+#define E__PORT_OPTION__RPI__RP2040 (0x2040)
+#define E__PORT_OPTION__RPI__RP2350 (0x2350)
+#define E__PORT_OPTION__RPI__RP2354 (0x2354)
+
+
+// Ports should indicate these systems as (1) or (0)
+ // E__PORT__HAS_TICK
 
 #endif

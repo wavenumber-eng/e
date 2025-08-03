@@ -1,5 +1,6 @@
 #include "e.h"
 
+
 #if CONFIG__E_SHELL__ENABLE != 0
 
 static e_shell__context_t e_shell__system = NULL;
@@ -16,14 +17,21 @@ e_shell__context_t e__get_system_shell()
 
 #endif
 
-void e__init()
+int e__init()
 {
-	e_tick__init();
+	//Supplied by the port hw tick driver
+	#if E__PORT__HAS_TICK_DRIVER == 1
+		e_tick__init();
+	#endif
+
+	return 0;
 }
 
 void e__crunch()
 {
-	e_tick__crunch();
+	#if CONFIG__E_TRIGGER__ENABLE != 0
+		e_trig__crunch();
+	#endif
 
 	#if CONFIG__E_SHELL__ENABLE != 0
 

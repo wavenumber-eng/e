@@ -4,49 +4,52 @@
 #define _E_CONFIG__PORT_H_
 
 #ifndef E__PORT
-    #error "Porting layer not defined for e"
+    #warning "Porting layer not defined for e, using skeleton"
+
+    #define E__PORT E__PORT_OPTION__SKELETON
 
 #else
 
-#if E__PORT == E__PORT_OPTION__NXP__MCXN
+    #if E__PORT == E__PORT_OPTION__NXP__MCXN
 
-#include <port/nxp__mcxn/e_port__nxp__mcxn.h>
+        #include <port/nxp__mcxn/e_port__nxp__mcxn.h>
 
-#elif E__PORT == E__PORT_OPTION__ZEPHYR
+    #elif E__PORT == E__PORT_OPTION__ZEPHYR
 
-#include <port/zephyr/e_port__zephyr.h>
+        #include <port/zephyr/e_port__zephyr.h>
 
-#elif E__PORT == E__PORT_OPTION__RPI__RP2350
+    #elif E__PORT == E__PORT_OPTION__RPI__RP2XXX
 
-#include <port/rpi__rp2350/e_port__rpi_rp2350.h>
+        #include <port/rpi__rp2xxx/e_port__rpi_rp2xxx.h>
 
+    #elif E__PORT == E__PORT_OPTION__RPI__RP2040
 
-#elif E__PORT == E__PORT_OPTION__NXP__MCXA
+        #include <port/rpi__rp2xxx/e_port__rpi_rp2xxx.h>
+        
+    #elif E__PORT == E__PORT_OPTION__RPI__RP2350
 
-#include <port/nxp__mcxa/e_port__nxp__mcxa.h>
+        #include <port/rpi__rp2xxx/e_port__rpi_rp2xxx.h>
 
-#elif E__PORT == E__PORT_OPTION__NXP__LPC865
+    #elif E__PORT == E__PORT_OPTION__RPI__RP2354
 
-#include <port/nxp__lpc865/e_port__nxp__lpc865.h>
+        #include <port/rpi__rp2xxx/e_port__rpi_rp2xxx.h>
 
-#endif
+    #elif E__PORT == E__PORT_OPTION__NXP__MCXA
 
-#ifndef CONFIG__E_LIST_NULL
-#error "e port layer needs  CONFIG__E_LIST_NULL  defined"
-#endif
+        #include <port/nxp__mcxa/e_port__nxp__mcxa.h>
 
-#ifndef CONFIG__E_TICK_PERIOD__MS
-#error "e port layer needs  CONFIG__E_TICK_PERIOD__MS  defined"
-#endif
+    #elif E__PORT == E__PORT_OPTION__NXP__LPC865
 
-#ifndef CONFIG__E_TICK_IRQ_PRIORITY
-#error "e port layer needs  CONFIG__E_TICK_IRQ_PRIORITY  defined"
-#endif
+        #include <port/nxp__lpc865/e_port__nxp__lpc865.h>
 
-#ifndef CONFIG__E_WFI
-#error "e port layer needs  CONFIG__E_WFI  defined"
-#endif
+    #endif
+       
 
 #endif
+
+#ifndef CONFIG__E_NULL
+        #define CONFIG__E_NULL      NULL
+#endif
+
 
 #endif

@@ -1,10 +1,9 @@
 
 
-OpenDocument="reset.S", FilePath="C:/ELI/projects/playpower/crickets/firmware/zephyr/arch/arm/core/cortex_m/reset.S", Line=92
-OpenDocument="fault_s.S", FilePath="C:/ELI/projects/playpower/crickets/firmware/zephyr/arch/arm/core/cortex_m/fault_s.S", Line=70
-OpenDocument="e_port__zephyr.c", FilePath="C:/ELI/projects/playpower/crickets/firmware/e/src/port/zephyr/e_port__zephyr.c", Line=0
-OpenDocument="e_tick.c", FilePath="C:/ELI/projects/playpower/crickets/firmware/e/src/e_tick.c", Line=201
-OpenDocument="main.c", FilePath="C:/ELI/projects/playpower/crickets/firmware/e/test/zephyr/tick/src/main.c", Line=0
+OpenDocument="reset.S", FilePath="C:/ELI/projects/playpower/crickets/firmware/zephyr/arch/arm/core/cortex_m/reset.S", Line=113
+OpenDocument="fault_s.S", FilePath="C:/ELI/projects/playpower/crickets/firmware/zephyr/arch/arm/core/cortex_m/fault_s.S", Line=72
+OpenDocument="e_tick.c", FilePath="C:/ELI/projects/playpower/crickets/firmware/e/src/e_tick.c", Line=48
+OpenDocument="main.c", FilePath="C:/ELI/projects/playpower/crickets/firmware/e/test/zephyr/tick/src/main.c", Line=10
 OpenDocument="cmsis_gcc.h", FilePath="C:/ELI/projects/playpower/crickets/firmware/modules/hal/cmsis/CMSIS/Core/Include/cmsis_gcc.h", Line=241
 OpenDocument="mpsc_pbuf.c", FilePath="C:/ELI/projects/playpower/crickets/firmware/zephyr/lib/os/mpsc_pbuf.c", Line=134
 OpenDocument="log_core.c", FilePath="C:/ELI/projects/playpower/crickets/firmware/zephyr/subsys/logging/log_core.c", Line=657
@@ -14,17 +13,17 @@ OpenDocument="kernel.h", FilePath="C:/ELI/projects/playpower/crickets/firmware/e
 OpenDocument="ozone_mcxn.jdebug", FilePath="C:/ELI/projects/playpower/crickets/firmware/e/test/zephyr/tick/ozone_mcxn.jdebug", Line=0
 OpenDocument="asm_inline_gcc.h", FilePath="C:/ELI/projects/playpower/crickets/firmware/zephyr/include/zephyr/arch/arm/asm_inline_gcc.h", Line=62
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=340, h=1074, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
-OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=340, h=402, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=340, h=1039, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=340, h=419, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Memory 1", DockArea=BOTTOM, x=1, y=0, w=1922, h=353, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=0, w=1482, h=303, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Functions", DockArea=LEFT, x=0, y=1, w=1482, h=1173, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=0, w=1482, h=328, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Functions", DockArea=LEFT, x=0, y=1, w=1482, h=1130, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=1917, h=353, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
-TableHeader="Functions", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Address";"Size";"#Insts";"Source"], ColWidths=[4060;158;109;140;2173]
+TableHeader="Functions", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Address";"Size";"#Insts";"Source"], ColWidths=[4060;158;109;140;3189]
 TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[115;222;609]
-TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
-TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;332]
+TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Description"], ColWidths=[115;222;889]
 TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[187;112;154;1029]
+TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;357]
 WatchedExpression="count", RefreshRate=2, Window=Watched Data 1

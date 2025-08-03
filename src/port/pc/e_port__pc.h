@@ -9,14 +9,8 @@
 #ifndef E_PORT_PC
 #define E_PORT_PC
 
-#define CONFIG__E_LIST_NULL			  			   (void *)0
+#define CONFIG__E_NULL			  	    		   (void *)0
 
-#define CONFIG__E_TICK_PERIOD__MS			       (1)
-
-#define CONFIG__E_TICK_IRQ_PRIORITY			       (0)	  	      
-
-#define CONFIG__E_WFI						       
-
-
+#define E__PORT__HAS_TICK						     (1)
 
 #endif

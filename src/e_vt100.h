@@ -21,10 +21,10 @@
     #define E_VT100__MOVE_CURSOR_TO_COLUMN   E_VT100__CSI"%dG"
     #define E_VT100__RESET                   E_VT100__CSI "0m"
 
-#ifndef CONFIG__E_VT100_DEFAULT_COLOR
+#ifndef CONFIG__E_VT100__DEFAULT_COLOR
     #define E_VT100__DEFAULT                 E_VT100__WHITE
 #else
-    #define E_VT100__DEFAULT                 CONFIG__E_VT100_DEFAULT_COLOR
+    #define E_VT100__DEFAULT                 CONFIG__E_VT100__DEFAULT_COLOR
 #endif
 
 #else

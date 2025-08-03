@@ -4,10 +4,10 @@
 #include "e_queue.h"
 #include "e_debug.h"
 
-#define CMD_HEADER_1        0X11
-#define CMD_HEADER_2        0XC0
-#define CMD_HEADER_3        0XFF
-#define CMD_HEADER_4        0XEE
+#define MSG_HEADER_1        0X11
+#define MSG_HEADER_2        0XC0
+#define MSG_HEADER_3        0XFF
+#define MSG_HEADER_4        0XEE
 
  //Command detection possible states
 typedef enum {
@@ -20,7 +20,7 @@ typedef enum {
     SCAN_PAYLOAD,
     SCAN_CRC_1,
     SCAN_CRC_2,
-    NUM_OF_CMD_DETECT_STATES,
+    NUM_OF_MSG_DETECT_STATES,
 } msg_detect_state;
 
 
@@ -28,13 +28,13 @@ typedef enum {
 
 #define ADD_TO_BUFFER_CRC(idx, buffer, data, crc) \
     buffer[idx++] = data;                         \
-    crc = crc16_ccit_step(crc, data)
+    crc = e__crc16_ccit_step(crc, data)
 
 #define ADD_TO_QUEUE(queue_ptr, data)       bq__enqueue(queue_ptr, data)
 
 #define ADD_TO_QUEUE_CRC(queue_ptr, data, crc)  \
     bq__enqueue(queue_ptr, data);               \
-    crc = crc16_ccit_step(crc, data)
+    crc = e__crc16_ccit_step(crc, data)
 
 
 #define MSG_HANDLER_ERR(...) E_LOG_ERR(__VA_ARGS__)
@@ -103,10 +103,10 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
     switch (msi->detect_state)
     {
     case SCAN_HEADER_1:
-        if (next_byte_in == CMD_HEADER_1)
+        if (next_byte_in == MSG_HEADER_1)
         {
-            msi->calc_crc16 = CRC_CCIT_SEED;
-            msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
+            msi->calc_crc16 = E__CRC_CCIT_SEED;
+            msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
             msi->detect_state = SCAN_HEADER_2;
         }
         else
@@ -116,9 +116,9 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
         break;
 
     case SCAN_HEADER_2:
-        if (next_byte_in == CMD_HEADER_2    )
+        if (next_byte_in == MSG_HEADER_2    )
         {
-            msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
+            msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
             msi->detect_state = SCAN_HEADER_3;
         }
         else
@@ -128,9 +128,9 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
         break;
 
     case SCAN_HEADER_3:
-        if (next_byte_in == CMD_HEADER_3)
+        if (next_byte_in == MSG_HEADER_3)
         {
-            msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
+            msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
             msi->detect_state = SCAN_HEADER_4;
         }
         else
@@ -140,9 +140,9 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
         break;
 
     case SCAN_HEADER_4:
-        if (next_byte_in == CMD_HEADER_4)
+        if (next_byte_in == MSG_HEADER_4)
         {
-            msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
+            msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
             msi->detect_state = SCAN_PAYLOAD_LENGTH_L;
         }
         else
@@ -153,7 +153,7 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
 
     case SCAN_PAYLOAD_LENGTH_L:
         msi->payload_length = (uint16_t)next_byte_in;
-        msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
+        msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
         msi->detect_state = SCAN_PAYLOAD_LENGTH_H;
         break;
 
@@ -168,7 +168,7 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
         }
         else
         {
-            msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
+            msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
             msi->detect_state = SCAN_PAYLOAD;
         }
         break;
@@ -176,7 +176,7 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
     case SCAN_PAYLOAD:
         msi->payload[msi->i_payload] = next_byte_in;
         msi->i_payload++;
-        msi->calc_crc16 = crc16_ccit_step(msi->calc_crc16, next_byte_in);
+        msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
         if ((msi->i_payload >= msi->payload_length))
         {
             msi->detect_state = SCAN_CRC_1;
@@ -238,10 +238,10 @@ uint32_t e_msg__frame_into_q(byte_queue_t *output_queue,
         return 0;
     }
 
-    ADD_TO_QUEUE_CRC(output_queue, CMD_HEADER_1, crc16);
-    ADD_TO_QUEUE_CRC(output_queue, CMD_HEADER_2, crc16);
-    ADD_TO_QUEUE_CRC(output_queue, CMD_HEADER_3, crc16);
-    ADD_TO_QUEUE_CRC(output_queue, CMD_HEADER_4, crc16);
+    ADD_TO_QUEUE_CRC(output_queue, MSG_HEADER_1, crc16);
+    ADD_TO_QUEUE_CRC(output_queue, MSG_HEADER_2, crc16);
+    ADD_TO_QUEUE_CRC(output_queue, MSG_HEADER_3, crc16);
+    ADD_TO_QUEUE_CRC(output_queue, MSG_HEADER_4, crc16);
 
     ADD_TO_QUEUE_CRC(output_queue, (payload_length&0xff), crc16);
     ADD_TO_QUEUE_CRC(output_queue, (uint8_t)(payload_length>>8), crc16);

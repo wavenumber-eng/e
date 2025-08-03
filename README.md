@@ -9,6 +9,10 @@ Some of the uilities are pure software (the byte queue) but others require a "po
 
 Most embedded applications need the same "stuff".   e is the skeleton of the "stuff"
 
+## Testing
+
+Useful to install clang on windows (choco install clang)
+
 ## core functionality
 
 ### e_tick
@@ -28,8 +32,6 @@ A simple statemachine framework.
 # Notes:
 
 ## Zephyr
-
-get infrastructure setup with some kconfig options to get things to build.
 
 ## Ports
 
@@ -57,7 +59,7 @@ Test projects.  Current have 1 project for zephyr tick.   Will add unity tests, 
 
 ### zephyr
 
-This has the module.yml for pointing zephyr
+This has the module.yml for using in a zephyr applications
 
 
 

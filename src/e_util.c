@@ -1,6 +1,6 @@
 #include "e_util.h"
 
-uint16_t crc16_ccit_step(uint16_t crc_in, uint8_t data)
+uint16_t e__crc16_ccit_step(uint16_t crc_in, uint8_t data)
 {
     uint16_t crc_tmp;
 

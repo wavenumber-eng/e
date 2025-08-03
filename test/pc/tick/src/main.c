@@ -1,22 +1,14 @@
 #include <stdlib.h>
 #include <string.h>
-#include <zephyr/kernel.h>
 #include "e.h"
-#include <zephyr/logging/log.h>
-
-LOG_MODULE_REGISTER(main);
-
-#define TEST_LOG    printk
 
 uint32_t test_tick;
 
 int32_t count=0;
 
-
-
 int main(void)
 {
-    
+   
     //init is called with zephyr sys_init()
 
     while (1)
@@ -25,7 +17,7 @@ int main(void)
         {
             if(e_tick__timeout(&test_tick, 1000))
             {
-                printk("hello timeout %d\r\n",count++);
+                printf("hello timeout %d\r\n",count++);
             }
         } 
         else

@@ -8,13 +8,13 @@ if(CONFIG__E)
     set(E_SRC_DIR "${E_BASE_DIR}/src/")
        
     include(${E_BASE_DIR}/cmake/e.cmake)
+    
+    set(E__PORT "E__PORT_OPTION__ZEPHYR")
 
     e__get_core_src(E_SRC_FILES ${E_BASE_DIR})
 
-    zephyr_library_sources(${E_SRC_DIR}/port/zephyr/e_port__zephyr.c)
     zephyr_library_sources(${E_SRC_FILES})
 
-    set(E__PORT "E__PORT_OPTION__ZEPHYR")
     #This will set all the undefined options to defauts
     e_config__set_defaults()
 

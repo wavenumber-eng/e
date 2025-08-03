@@ -10,6 +10,7 @@
 #include "e_debug.h"
 #include "e_queue.h"
 #include "e_tick.h"
+#include "e_trigger.h"
 #include "e_state.h"
 #include "e_btn.h"
 #include "e_msg.h"
@@ -24,8 +25,11 @@ extern "C"
 {
 #endif
 
-void 	e__init();
-void 	e__crunch();
+int 	e__init();
+/*
+     call e__crunch() in  main loop to process triggers and the shell if they are enabled
+*/
+ void 	e__crunch();
 
 #ifdef __cplusplus
 }

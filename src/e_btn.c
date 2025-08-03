@@ -1,7 +1,11 @@
 #include "e_btn.h"
 
 #ifndef NULL
-    #define NULL 0
+    #define NULL   0
+#endif
+
+#ifndef CONFIG__E_NULL
+        #define CONFIG__E_NULL      NULL
 #endif
 
 #define E_BTN_DBG(...)
@@ -11,7 +15,7 @@ void e_btn__init(e_btn_t *btn,
                     e_btn_read_t read
                  )
 {
-    if(btn!=NULL)
+    if(btn!=CONFIG__E_NULL)
     {
         btn->debounce_time_ms = debounce_time_ms;
         btn->down = 0;
@@ -31,18 +35,18 @@ bool e_btn__add_to_list(e_btn_t *btn_list,e_btn_t *btn)
         E_BTN_DBG("We add a btn to ourselves");
         return false;
     }
-    if(btn_list==NULL)
+    if(btn_list==CONFIG__E_NULL)
     {
         E_BTN_DBG("btn_list is null.");
         return false;
     }
-    if(btn==NULL)
+    if(btn==CONFIG__E_NULL)
     {
         E_BTN_DBG("btn is null.  Cannot add to list.");
         return false;
     }
 
-    while(btn_list->next != NULL)
+    while(btn_list->next != CONFIG__E_NULL)
     {
         if(btn_list->next == btn_list)
         {
@@ -61,12 +65,12 @@ bool e_btn__add_to_list(e_btn_t *btn_list,e_btn_t *btn)
 
 void e_btn__crunch_internal(e_btn_t *btn, uint32_t process_time_ms)
 {
-    if(btn == NULL)
+    if(btn == CONFIG__E_NULL)
     {
         return;
     }
    
-    if(btn->read == NULL)
+    if(btn->read == CONFIG__E_NULL)
     {
         return;
     }
@@ -94,7 +98,7 @@ void e_btn__crunch_internal(e_btn_t *btn, uint32_t process_time_ms)
                 {
                     btn->state = BTN_STATE__WAIT_FOR_RELEASE;
                     btn->hold_time = btn->debounce_timer;
-                    if(btn->down_cb != NULL)
+                    if(btn->down_cb != CONFIG__E_NULL)
                     {
                         btn->down_cb(btn);
                     }
@@ -139,7 +143,7 @@ void e_btn__crunch_internal(e_btn_t *btn, uint32_t process_time_ms)
                 {
                     btn->state = BTN_STATE__WAIT_FOR_PRESS;
                    
-                    if(btn->up_cb != NULL)
+                    if(btn->up_cb != CONFIG__E_NULL)
                     {
                         btn->up_cb(btn);
                     }
@@ -182,7 +186,7 @@ void e_btn__crunch_internal(e_btn_t *btn, uint32_t process_time_ms)
 
 void e_btn__crunch(e_btn_t *btn, uint32_t process_time_ms)
 {
-    while(btn!=NULL)
+    while(btn!=CONFIG__E_NULL)
     {
         e_btn__crunch_internal(btn,process_time_ms);
         btn=btn->next;
