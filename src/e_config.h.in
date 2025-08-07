@@ -21,6 +21,11 @@
     #define CONFIG__E_BQ_MAX_PRINTF_LEN				   (@CONFIG__E_BQ_MAX_PRINTF_LEN@)
 #endif
 
+#ifndef CONFIG__E_ACTIVITY__STACK_DEPTH
+    #define CONFIG__E_ACTIVITY__STACK_DEPTH					   (@CONFIG__E_ACTIVITY__STACK_DEPTH@)
+#endif
+
+
 #ifndef CONFIG__E_VT100__ENABLE
     #define CONFIG__E_VT100__ENABLE                    (@CONFIG__E_VT100__ENABLE@)
 #endif

@@ -22,6 +22,7 @@ macro(e_config__set_defaults)
     set_default(CONFIG__E_SHELL_MAX_ARGS 0)
     set_default(CONFIG__E_SHELL_HIST_MAX 0)
     set_default(CONFIG__E_SHELL_MAX_CMD 0)
+    set_default(CONFIG__E_ACTIVITY__STACK_DEPTH 16)
 endmacro()
 
 function(e__get_core_src output_var e_base_dir)
@@ -37,7 +38,8 @@ function(e__get_core_src output_var e_base_dir)
         "${E_SRC_DIR}/e_util.c"
         "${E_SRC_DIR}/e_msg.c"
         "${E_SRC_DIR}/e_trigger.c"
-
+        "${E_SRC_DIR}/e_activity.c"
+        
         "${E_SRC_DIR}/port/common/e_tick__arm_cm.c"
         "${E_SRC_DIR}/port/pc/e_tick__pc.c"
         "${E_SRC_DIR}/port/zephyr/e_tick__zephyr.c"

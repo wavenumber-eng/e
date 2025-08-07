@@ -49,5 +49,10 @@ config _E_LOG__RTT_TX_BUFFER_SIZE
 	help
 		enable e logging
 
-endmenu
+config _E_ACTIVITY_STACK_DEPTH
+	int "Total depth of the activity stack"
+	default 16
+	help
+		Total depth of the activity stack
 
+endmenu
