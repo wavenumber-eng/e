@@ -56,25 +56,25 @@ config _E_ACTIVITY_STACK_DEPTH
 		Total depth of the activity stack
 
 config _E_MSG_HEADER_1
-	int "Header byte 1"
+	hex "Header byte 1"
 	default 0xBE
 	help
 		Header byte 1
 
 config _E_MSG_HEADER_2
-	int "Header byte 2"
+	hex "Header byte 2"
 	default 0xEF
 	help
 		Header byte 2
         
 config _E_MSG_HEADER_3
-	int "Header byte 3"
+	hex "Header byte 3"
 	default 0xAA
 	help
 		Header byte 3
 
 config _E_MSG_HEADER_4
-	int "Header byte 4"
+	hex "Header byte 4"
 	default 0x55
 	help
 		Header byte 4
