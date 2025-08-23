@@ -23,6 +23,11 @@ macro(e_config__set_defaults)
     set_default(CONFIG__E_SHELL_HIST_MAX 0)
     set_default(CONFIG__E_SHELL_MAX_CMD 0)
     set_default(CONFIG__E_ACTIVITY__STACK_DEPTH 16)
+    set_default(CONFIG__E_MSG_HEADER_1      0xBE)
+    set_default(CONFIG__E_MSG_HEADER_2      0xEF)
+    set_default(CONFIG__E_MSG_HEADER_3      0xAA)
+    set_default(CONFIG__E_MSG_HEADER_4      0x55)
+    
 endmacro()
 
 function(e__get_core_src output_var e_base_dir)

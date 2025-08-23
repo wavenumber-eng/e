@@ -42,7 +42,7 @@ typedef struct
 }e_act_t;
 
 
-#define ACTIVITY__MAKE(_name,_id,_user,_enter,_crunch,_exit)     \
+#define ACTIVITY__MAKE_EXPLICIT(_name,_id,_user,_enter,_crunch,_exit)     \
 		e_act_t _name = {         \
 		.name = #_name,           \
 		.id = _id,                \
@@ -51,15 +51,27 @@ typedef struct
 		.crunch = _crunch,        \
 		.exit = _exit}
 
-e_act_err_e e_act__switch(e_act_t *new_activity,int32_t msg_id,void *msg);
+#define ACTIVITY__MAKE(_name, _id, _user)    \
+    void _name##__enter(int32_t msg_id, void *msg);          \
+    void _name##__crunch(void *user);                        \
+    void _name##__exit(int32_t msg_id, void *msg);           \
+    e_act_t _name = {                                        \
+        .name = #_name,                                      \
+        .id = _id,                                           \
+        .user = _user,                                       \
+        .enter = _name##__enter,                             \
+        .crunch = _name##__crunch,                           \
+        .exit = _name##__exit}
 
-e_act_err_e e_act__push(e_act_t *new_activity,int32_t msg_id,void *msg);
+e_act_err_e e_activity__switch(e_act_t *new_activity,int32_t msg_id,void *msg);
 
-e_act_err_e e_act__pop(int32_t msg_id,void *msg);
+e_act_err_e e_activity__push(e_act_t *new_activity,int32_t msg_id,void *msg);
 
-void e_act__crunch();
+e_act_err_e e_activity__pop(int32_t msg_id,void *msg);
 
-e_act_t * e_act__current();
+void e_activity__crunch();
+
+e_act_t * e_activity__current();
 
 
 #endif /* ACTITIVY_H_ */

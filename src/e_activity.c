@@ -21,25 +21,25 @@ static  uint32_t        act_stack_pointer = 0;
 static  e_act_t        *act_stack[CONFIG__E_ACTIVITY__STACK_DEPTH];
 static  e_act_t        *current_activity = CONFIG__E_NULL;
 
-e_act_t * e_act__current()
+e_act_t * e_activity__current()
 {
         return current_activity;
 }
 
-void e_act__stack_reset()
+void e_activity__stack_reset()
 {
         act_stack_pointer = 0;
 }
 
-e_act_err_e e_act__switch(e_act_t *new_activity,int32_t msg_id,void *msg)
+e_act_err_e e_activity__switch(e_act_t *new_activity,int32_t msg_id,void *msg)
 {
         if(new_activity == CONFIG__E_NULL)
         {
-            ACT_ERR("e_act__switch: new_activity is NULL");
+            ACT_ERR("e_activity__switch: new_activity is NULL");
             return e_activity_invalid;
         }
 
-        e_act__stack_reset();
+        e_activity__stack_reset();
          
         //Finish the current activity
         if(current_activity!=CONFIG__E_NULL)
@@ -50,12 +50,12 @@ e_act_err_e e_act__switch(e_act_t *new_activity,int32_t msg_id,void *msg)
             }
             else
             {
-                ACT_ERR("e_act__switch: current_activity->exit is NULL");
+                ACT_ERR("e_activity__switch: current_activity->exit is NULL");
             }
         }
         else
         {
-            ACT_ERR("e_act__switch: current_activity is NULL, no exit to call");
+            ACT_ERR("e_activity__switch: current_activity is NULL, no exit to call");
         }
         
         //Switch to the new activity
@@ -67,7 +67,7 @@ e_act_err_e e_act__switch(e_act_t *new_activity,int32_t msg_id,void *msg)
         }
         else
         {
-            ACT_ERR("e_act__switch: current_activity->enter is NULL");
+            ACT_ERR("e_activity__switch: current_activity->enter is NULL");
         }
 
         //Todo, implement a global hook for clearing button activity, etc
@@ -75,24 +75,24 @@ e_act_err_e e_act__switch(e_act_t *new_activity,int32_t msg_id,void *msg)
         return e_activity_ok;
 }
 
-e_act_err_e e_act__push(e_act_t *new_activity,int32_t msg_id,void *msg)
+e_act_err_e e_activity__push(e_act_t *new_activity,int32_t msg_id,void *msg)
 {
         if(new_activity == CONFIG__E_NULL)
         {
-            ACT_ERR("e_act__push: new_activity is NULL");
+            ACT_ERR("e_activity__push: new_activity is NULL");
             return e_activity_invalid;
         }
 
         if(act_stack_pointer>=CONFIG__E_ACTIVITY__STACK_DEPTH)
         {
-            ACT_ERR("e_act__push: stack full (depth=%d)", CONFIG__E_ACTIVITY__STACK_DEPTH);
+            ACT_ERR("e_activity__push: stack full (depth=%d)", CONFIG__E_ACTIVITY__STACK_DEPTH);
             return e_activity_stack_full;
         }
 
         if(current_activity == CONFIG__E_NULL)
         {
-            ACT_ERR("e_act__push: current_activity is NULL, calling switch instead");
-            return e_act__switch(new_activity,msg_id,msg);
+            ACT_ERR("e_activity__push: current_activity is NULL, calling switch instead");
+            return e_activity__switch(new_activity,msg_id,msg);
         }
 
         //Finish the current activity and tell it it will be pushed
@@ -102,7 +102,7 @@ e_act_err_e e_act__push(e_act_t *new_activity,int32_t msg_id,void *msg)
         }
         else
         {
-            ACT_ERR("e_act__push: current_activity->exit is NULL");
+            ACT_ERR("e_activity__push: current_activity->exit is NULL");
         }
 
         //push the current activity on the stack
@@ -119,7 +119,7 @@ e_act_err_e e_act__push(e_act_t *new_activity,int32_t msg_id,void *msg)
         }
         else
         {
-            ACT_ERR("e_act__push: current_activity->enter is NULL");
+            ACT_ERR("e_activity__push: current_activity->enter is NULL");
         }
 
         //ToDo Add a global hook
@@ -128,12 +128,12 @@ e_act_err_e e_act__push(e_act_t *new_activity,int32_t msg_id,void *msg)
 
 }
 
-e_act_err_e e_act__pop(int32_t msg_id,void *msg)
+e_act_err_e e_activity__pop(int32_t msg_id,void *msg)
 {
         //See if the stack is empty
         if(act_stack_pointer == 0)
         {
-            ACT_ERR("e_act__pop: stack is empty");
+            ACT_ERR("e_activity__pop: stack is empty");
             return e_activity_stack_empty;
         }
 
@@ -146,12 +146,12 @@ e_act_err_e e_act__pop(int32_t msg_id,void *msg)
             }
             else
             {
-                ACT_ERR("e_act__pop: current_activity->exit is NULL");
+                ACT_ERR("e_activity__pop: current_activity->exit is NULL");
             }
         }
         else
         {
-            ACT_ERR("e_act__pop: current_activity is NULL");
+            ACT_ERR("e_activity__pop: current_activity is NULL");
         }
 
         //Get the activity off the stack
@@ -161,7 +161,7 @@ e_act_err_e e_act__pop(int32_t msg_id,void *msg)
 
         if(current_activity == CONFIG__E_NULL)
         {
-            ACT_ERR("e_act__pop: activity from stack is NULL");
+            ACT_ERR("e_activity__pop: activity from stack is NULL");
         }
 
         //Enter the new activity with the parameters returned from the old
@@ -173,11 +173,11 @@ e_act_err_e e_act__pop(int32_t msg_id,void *msg)
         {
             if(current_activity == CONFIG__E_NULL)
             {
-                ACT_ERR("e_act__pop: popped activity is NULL");
+                ACT_ERR("e_activity__pop: popped activity is NULL");
             }
             else
             {
-                ACT_ERR("e_act__pop: popped activity->enter is NULL");
+                ACT_ERR("e_activity__pop: popped activity->enter is NULL");
             }
         }
 
@@ -186,7 +186,7 @@ e_act_err_e e_act__pop(int32_t msg_id,void *msg)
         return e_activity_ok;
 }
 
-void e_act__crunch()
+void e_activity__crunch()
 {
     if(current_activity != CONFIG__E_NULL)
     {
@@ -196,11 +196,11 @@ void e_act__crunch()
         }
         else
         {
-            ACT_ERR("e_act__crunch: current_activity->crunch is NULL");
+            ACT_ERR("e_activity__crunch: current_activity->crunch is NULL");
         }
     }
     else
     {
-        ACT_ERR("e_act__crunch: current_activity is NULL");
+        ACT_ERR("e_activity__crunch: current_activity is NULL");
     }
 }

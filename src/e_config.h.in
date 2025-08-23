@@ -82,4 +82,20 @@
     #define CONFIG__E_SHELL_MAX_CMD					   (@CONFIG__E_SHELL_MAX_CMD@)
 #endif
 
+#ifndef CONFIG__E_MSG_HEADER_1
+    #define CONFIG__E_MSG_HEADER_1					   (@CONFIG__E_MSG_HEADER_1@)
+#endif
+
+#ifndef CONFIG__E_MSG_HEADER_2
+    #define CONFIG__E_MSG_HEADER_2					   (@CONFIG__E_MSG_HEADER_2@)
+#endif
+
+#ifndef CONFIG__E_MSG_HEADER_3
+    #define CONFIG__E_MSG_HEADER_3					   (@CONFIG__E_MSG_HEADER_3@)
+#endif
+
+#ifndef CONFIG__E_MSG_HEADER_4
+    #define CONFIG__E_MSG_HEADER_4				       (@CONFIG__E_MSG_HEADER_4@)
+#endif
+
 #endif
