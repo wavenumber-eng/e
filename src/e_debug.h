@@ -13,7 +13,7 @@
 
 #else
 
-#define SEGGER_RTT_LOG
+#define SEGGER_RTT_LOG(...)
 
 #endif
 
@@ -21,7 +21,6 @@
 #if CONFIG__E_LOG__ENABLE  != (0)
 
 #define E_LOG(...) SEGGER_RTT_LOG(__VA_ARGS__);
-
 #define E_LOG_INF(...) SEGGER_RTT_LOG(__VA_ARGS__);
 #define E_LOG_DBG(...) SEGGER_RTT_LOG(__VA_ARGS__);
 #define E_LOG_ERR(...) SEGGER_RTT_LOG(__VA_ARGS__);
@@ -29,9 +28,9 @@
 #else
 
 #define E_LOG(...)
-#define E_LOG_INF(...);
-#define E_LOG_DBG(...);
-#define E_LOG_ERR(...);
+#define E_LOG_INF(...)
+#define E_LOG_DBG(...)
+#define E_LOG_ERR(...)
 #endif
 
 
