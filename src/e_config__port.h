@@ -47,6 +47,10 @@
 
          #include <port/pc/e_port__pc.h>
 
+    #elif E__PORT == E__PORT_OPTION__TEST
+
+         #include <port/test/e_port__test.h>
+
     #endif
        
 

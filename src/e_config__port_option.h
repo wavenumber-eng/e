@@ -4,6 +4,7 @@
 #define E__PORT_OPTION__SKELETON    (0x0000)
 #define E__PORT_OPTION__PC          (0x0001)
 #define E__PORT_OPTION__ZEPHYR      (0x0002)
+#define E__PORT_OPTION__TEST        (0x0003)
  
 
 #define E__PORT_OPTION__NXP__MCXA   (0x1000)

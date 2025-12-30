@@ -41,37 +41,23 @@ void e_tick__delay_ms(uint32_t delay_ms)
 
 
 
-uint32_t e_tick__delta(uint32_t *time_in)
+uint32_t δt(uint32_t *time_in)
 {
-	volatile uint32_t elapsed;
-
 	if (time_in == CONFIG__E_NULL)
 		return 0;
 
-	elapsed = e_tick__get_ms();
-
-	if (elapsed >= *time_in)
-	{
-		elapsed -= *time_in;
-	}
-	else
-	{
-		elapsed += (0xFFFFFFFF - *time_in);
-	}
-
-	return elapsed;
+	return e_tick__get_ms() - *time_in;
 }
 
-uint32_t e_tick__timeout(uint32_t *time_in, uint32_t delta)
+uint32_t τ(uint32_t *time_in, uint32_t period_ms)
 {
-	volatile uint32_t elapsed;
+	uint32_t now = e_tick__get_ms();
+	uint32_t elapsed = now - *time_in;
 
-	elapsed = e_tick__delta(time_in);
-
-	if (elapsed >= delta)
+	if (elapsed >= period_ms)
 	{
-		*time_in = e_tick__get_ms();
-		return 1 + (elapsed - delta);
+		*time_in = now;
+		return elapsed;
 	}
 
 	return 0;

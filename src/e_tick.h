@@ -12,9 +12,21 @@ extern "C"
 
 #include "e_tick_drv_if.h"
 
-uint32_t e_tick__delta(uint32_t *time_in);
+/*
+ * δt - Get elapsed time since ticker was last set
+ * Returns: milliseconds elapsed (handles 32-bit wrap)
+ */
+uint32_t δt(uint32_t *time_in);
 
-uint32_t e_tick__timeout(uint32_t *time_in, uint32_t delta);
+/*
+ * τ - Check if timeout period has elapsed
+ * Returns: 0 if not expired, elapsed time if expired (resets ticker)
+ */
+uint32_t τ(uint32_t *time_in, uint32_t period_ms);
+
+/* Legacy aliases */
+#define e_tick__delta   δt
+#define e_tick__timeout τ
 
 #ifdef __cplusplus
 }
