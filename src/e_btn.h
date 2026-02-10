@@ -56,7 +56,7 @@ typedef struct e_btn
 #define E_BTN__MAKE BTN__MAKE
 
 void e_btn__init(e_btn_t *btn,
-                 uint8_t debounce_time_ms,
+                 uint32_t debounce_time_ms,
                  e_btn_read_t read
                  );
 
@@ -87,6 +87,71 @@ uint32_t e_btn__get_current_hold_time(e_btn_t *btn);
 void e_btn__reset_state (e_btn_t *btn);
 
 bool e_btn__add_to_list(e_btn_t *btn_list,e_btn_t *btn);
+
+
+/*============================================================
+ * Button Tap Detector
+ *
+ * Higher-level processor that sits on top of e_btn.
+ * Detects single, double, triple (N) tap sequences by
+ * counting UP events within a configurable gap window.
+ *
+ * Usage:
+ *   e_btn_tap_t tap;
+ *   e_btn_tap__init(&tap, 10, 400, my_read_fn);
+ *   // In periodic loop (e.g. every 10ms):
+ *   e_btn_tap__crunch(&tap, 10);
+ *   uint32_t ev = e_btn_tap__get_event(&tap);
+ *   if (ev == 1)  // single tap
+ *   if (ev == 2)  // double tap
+ *
+ * Note: single-tap events are delayed by gap_window_ms
+ * (the time we wait to see if another tap is coming).
+ *============================================================*/
+
+typedef enum
+{
+    BTN_TAP_STATE__IDLE     = 0,
+    BTN_TAP_STATE__COUNTING = 1
+
+} e_btn_tap_state_e;
+
+// Forward declaration
+struct e_btn_tap;
+
+// Callback: fired when a tap sequence completes.
+// press_count: 1 = single, 2 = double, 3 = triple, etc.
+typedef void (*e_btn_tap_cb_t)(struct e_btn_tap *tap, uint32_t press_count);
+
+typedef struct e_btn_tap
+{
+    struct e_btn_tap *next;             // Linked list support
+    e_btn_t btn;                        // Underlying debounced button
+    e_btn_tap_cb_t event_cb;            // If set: callback. If NULL: poll via get_event
+    uint32_t gap_window_ms;             // Max gap between presses (e.g. 400ms)
+    uint32_t gap_timer;                 // Internal timer
+    volatile uint32_t event;            // Latched tap count (0 = no event). Cleared on read.
+    uint32_t count;                     // Internal press counter during sequence
+    volatile e_btn_tap_state_e state;   // IDLE / COUNTING
+    void *user;                         // User context
+} e_btn_tap_t;
+
+// Initialize tap detector. Sets up inner e_btn with debounce and read callback.
+void e_btn_tap__init(e_btn_tap_t *tap,
+                     uint32_t debounce_time_ms,
+                     uint32_t gap_window_ms,
+                     e_btn_read_t read);
+
+// Process tap detector. Walks linked list. Call periodically.
+void e_btn_tap__crunch(e_btn_tap_t *tap, uint32_t process_time_ms);
+
+// Read tap event. Returns press count (1=single, 2=double, N=N taps).
+// Returns 0 if no event. Clears event after read.
+uint32_t e_btn_tap__get_event(e_btn_tap_t *tap);
+
+// Add tap detector to linked list
+bool e_btn_tap__add_to_list(e_btn_tap_t *list, e_btn_tap_t *tap);
+
 
 #ifdef __cplusplus
 }

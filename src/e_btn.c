@@ -11,12 +11,17 @@
 #define E_BTN_DBG(...)
 
 void e_btn__init(e_btn_t *btn,
-                    uint8_t debounce_time_ms,
+                    uint32_t debounce_time_ms,
                     e_btn_read_t read
                  )
 {
     if(btn!=CONFIG__E_NULL)
     {
+        btn->next = CONFIG__E_NULL;
+        btn->read = read;
+        btn->down_cb = CONFIG__E_NULL;
+        btn->up_cb = CONFIG__E_NULL;
+        btn->user = CONFIG__E_NULL;
         btn->debounce_time_ms = debounce_time_ms;
         btn->down = 0;
         btn->up = 0;
@@ -263,4 +268,143 @@ void e_btn__reset_state(e_btn_t *btn)
 }
 
 
+/*============================================================
+ * Button Tap Detector
+ *============================================================*/
+
+void e_btn_tap__init(e_btn_tap_t *tap,
+                     uint32_t debounce_time_ms,
+                     uint32_t gap_window_ms,
+                     e_btn_read_t read)
+{
+    if(tap == CONFIG__E_NULL)
+    {
+        return;
+    }
+
+    e_btn__init(&tap->btn, debounce_time_ms, read);
+    tap->next = CONFIG__E_NULL;
+    tap->event_cb = CONFIG__E_NULL;
+    tap->gap_window_ms = gap_window_ms;
+    tap->gap_timer = 0;
+    tap->event = 0;
+    tap->count = 0;
+    tap->state = BTN_TAP_STATE__IDLE;
+    tap->user = CONFIG__E_NULL;
+}
+
+
+static void e_btn_tap__crunch_internal(e_btn_tap_t *tap, uint32_t process_time_ms)
+{
+    if(tap == CONFIG__E_NULL)
+    {
+        return;
+    }
+
+    // Step the underlying button debouncer
+    e_btn__crunch_internal(&tap->btn, process_time_ms);
+
+    // Consume down flag (tap only uses UP events)
+    e_btn__down(&tap->btn);
+
+    // Check for release (UP) event
+    uint32_t up = e_btn__up(&tap->btn);
+
+    switch(tap->state)
+    {
+        default:
+        case BTN_TAP_STATE__IDLE:
+
+            if(up)
+            {
+                tap->count = 1;
+                tap->gap_timer = 0;
+                tap->state = BTN_TAP_STATE__COUNTING;
+            }
+
+            break;
+
+        case BTN_TAP_STATE__COUNTING:
+
+            if(up)
+            {
+                tap->count++;
+                tap->gap_timer = 0;
+            }
+            else
+            {
+                tap->gap_timer += process_time_ms;
+
+                if(tap->gap_timer > tap->gap_window_ms)
+                {
+                    if(tap->event_cb != CONFIG__E_NULL)
+                    {
+                        tap->event_cb(tap, tap->count);
+                    }
+                    else
+                    {
+                        tap->event = tap->count;
+                    }
+
+                    tap->count = 0;
+                    tap->state = BTN_TAP_STATE__IDLE;
+                }
+            }
+
+            break;
+    }
+}
+
+
+void e_btn_tap__crunch(e_btn_tap_t *tap, uint32_t process_time_ms)
+{
+    while(tap != CONFIG__E_NULL)
+    {
+        e_btn_tap__crunch_internal(tap, process_time_ms);
+        tap = tap->next;
+    }
+}
+
+
+uint32_t e_btn_tap__get_event(e_btn_tap_t *tap)
+{
+    uint32_t e = 0;
+
+    if(tap->event)
+    {
+        e = tap->event;
+        tap->event = 0;
+    }
+
+    return e;
+}
+
+
+bool e_btn_tap__add_to_list(e_btn_tap_t *list, e_btn_tap_t *tap)
+{
+    if(list == tap)
+    {
+        return false;
+    }
+    if(list == CONFIG__E_NULL)
+    {
+        return false;
+    }
+    if(tap == CONFIG__E_NULL)
+    {
+        return false;
+    }
+
+    while(list->next != CONFIG__E_NULL)
+    {
+        if(list->next == list)
+        {
+            break;
+        }
+        list = list->next;
+    }
+
+    list->next = tap;
+    return true;
+}
 
