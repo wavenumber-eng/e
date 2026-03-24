@@ -56,8 +56,8 @@
 
 #endif
 
-#ifndef CONFIG__E_NULL
-        #define CONFIG__E_NULL      NULL
+#ifndef CONFIG_E_NULL
+        #define CONFIG_E_NULL      NULL
 #endif
 
 

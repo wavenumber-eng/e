@@ -5,20 +5,20 @@
 #include "e_debug.h"
 
 
-#ifndef CONFIG__E_MSG_HEADER_1
-    #define CONFIG__E_MSG_HEADER_1        0xBE
+#ifndef CONFIG_E_MSG_HEADER_1
+    #define CONFIG_E_MSG_HEADER_1        0xBE
 #endif
 
-#ifndef CONFIG__E_MSG_HEADER_2
-    #define CONFIG__E_MSG_HEADER_2        0xEF
+#ifndef CONFIG_E_MSG_HEADER_2
+    #define CONFIG_E_MSG_HEADER_2        0xEF
 #endif
 
-#ifndef CONFIG__E_MSG_HEADER_3
-    #define CONFIG__E_MSG_HEADER_3        0xAA
+#ifndef CONFIG_E_MSG_HEADER_3
+    #define CONFIG_E_MSG_HEADER_3        0xAA
 #endif
 
-#ifndef CONFIG__E_MSG_HEADER_4
-    #define CONFIG__E_MSG_HEADER_4        0x55
+#ifndef CONFIG_E_MSG_HEADER_4
+    #define CONFIG_E_MSG_HEADER_4        0x55
 #endif
 
 
@@ -116,7 +116,7 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
     switch (msi->detect_state)
     {
     case SCAN_HEADER_1:
-        if (next_byte_in == CONFIG__E_MSG_HEADER_1)
+        if (next_byte_in == CONFIG_E_MSG_HEADER_1)
         {
             msi->calc_crc16 = E__CRC_CCIT_SEED;
             msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
@@ -129,7 +129,7 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
         break;
 
     case SCAN_HEADER_2:
-        if (next_byte_in == CONFIG__E_MSG_HEADER_2)
+        if (next_byte_in == CONFIG_E_MSG_HEADER_2)
         {
             msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
             msi->detect_state = SCAN_HEADER_3;
@@ -141,7 +141,7 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
         break;
 
     case SCAN_HEADER_3:
-        if (next_byte_in == CONFIG__E_MSG_HEADER_3)
+        if (next_byte_in == CONFIG_E_MSG_HEADER_3)
         {
             msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
             msi->detect_state = SCAN_HEADER_4;
@@ -153,7 +153,7 @@ void e_msg__process(e_msg_proc_inst_t *msi, uint8_t next_byte_in)
         break;
 
     case SCAN_HEADER_4:
-        if (next_byte_in == CONFIG__E_MSG_HEADER_4)
+        if (next_byte_in == CONFIG_E_MSG_HEADER_4)
         {
             msi->calc_crc16 = e__crc16_ccit_step(msi->calc_crc16, next_byte_in);
             msi->detect_state = SCAN_PAYLOAD_LENGTH_L;
@@ -251,10 +251,10 @@ uint32_t e_msg__frame_into_q(byte_queue_t *output_queue,
         return 0;
     }
 
-    ADD_TO_QUEUE_CRC(output_queue, CONFIG__E_MSG_HEADER_1, crc16);
-    ADD_TO_QUEUE_CRC(output_queue, CONFIG__E_MSG_HEADER_2, crc16);
-    ADD_TO_QUEUE_CRC(output_queue, CONFIG__E_MSG_HEADER_3, crc16);
-    ADD_TO_QUEUE_CRC(output_queue, CONFIG__E_MSG_HEADER_4, crc16);
+    ADD_TO_QUEUE_CRC(output_queue, CONFIG_E_MSG_HEADER_1, crc16);
+    ADD_TO_QUEUE_CRC(output_queue, CONFIG_E_MSG_HEADER_2, crc16);
+    ADD_TO_QUEUE_CRC(output_queue, CONFIG_E_MSG_HEADER_3, crc16);
+    ADD_TO_QUEUE_CRC(output_queue, CONFIG_E_MSG_HEADER_4, crc16);
 
     ADD_TO_QUEUE_CRC(output_queue, (payload_length&0xff), crc16);
     ADD_TO_QUEUE_CRC(output_queue, (uint8_t)(payload_length>>8), crc16);

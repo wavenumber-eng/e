@@ -3,77 +3,77 @@
 
 menu "e"
 
-config _E
+config E
 	bool "Enable E for embedded"
 
-config _E_VT100__ENABLE
+config E_VT100_ENABLE
 	default n
 	bool "Enables VT100 macro expansions for shell colors, etc"
 
 
-config _E_BQ_MAX_PRINTF_LEN
+config E_BQ_MAX_PRINTF_LEN
 	int "Maximum BQ printf length"
-	depends on _E
+	depends on E
 	default 128
 	range 32 1024
 	help
 	  Maximum length for BQ printf operations. This value determines
 	  the buffer size allocated for formatted output operations.  This buffer is placed on the stack
 
-config _E_TICK_THREAD_STACK_SIZE
+config E_TICK_THREAD_STACK_SIZE
 	int "stack size of the e tick thread"
-	depends on _E
+	depends on E
 	default 2048
 	range 512 65536
 	help
 		stack size of the e tick thread
 
-config _E_LOG__ENABLE
+config E_LOG_ENABLE
 	bool "enable e logging"
 	default n
-	depends on _E
+	depends on E
 	help
 		enable e logging
 
-config _E_LOG__RTT_ENABLE
+config E_LOG_RTT_ENABLE
 	bool "enable e logging"
 	default n
-	depends on _E_LOG__ENABLE
+	depends on E_LOG_ENABLE
 	help
 		enable e logging
 
-config _E_LOG__RTT_TX_BUFFER_SIZE
+config E_LOG_RTT_TX_BUFFER_SIZE
 	int "enable e logging"
-	depends on _E_LOG__RTT_ENABLE
+	depends on E_LOG_RTT_ENABLE
 	default 2048
 	help
 		enable e logging
 
-config _E_ACTIVITY_STACK_DEPTH
+config E_ACTIVITY_STACK_DEPTH
 	int "Total depth of the activity stack"
 	default 16
 	help
 		Total depth of the activity stack
 
-config _E_MSG_HEADER_1
+config E_MSG_HEADER_1
 	hex "Header byte 1"
 	default 0xBE
 	help
 		Header byte 1
 
-config _E_MSG_HEADER_2
+config E_MSG_HEADER_2
 	hex "Header byte 2"
 	default 0xEF
 	help
 		Header byte 2
         
-config _E_MSG_HEADER_3
+config E_MSG_HEADER_3
 	hex "Header byte 3"
 	default 0xAA
 	help
 		Header byte 3
 
-config _E_MSG_HEADER_4
+config E_MSG_HEADER_4
 	hex "Header byte 4"
 	default 0x55
 	help

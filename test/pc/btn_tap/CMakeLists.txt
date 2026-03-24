@@ -29,9 +29,9 @@ add_executable(btn_tap_test
 
 # Configure e_config.h (use TEST port for unit testing)
 set(E__PORT "E__PORT_OPTION__TEST")
-set(CONFIG__E_LOG__ENABLE 0)
-set(CONFIG__E_LOG__RTT_ENABLE 0)
-set(CONFIG__E_TRIGGER__ENABLE 0)
+set(CONFIG_E_LOG_ENABLE 0)
+set(CONFIG_E_LOG_RTT_ENABLE 0)
+set(CONFIG_E_TRIGGER_ENABLE 0)
 
 include(${E_DIR}cmake/e.cmake)
 e_config__set_defaults()

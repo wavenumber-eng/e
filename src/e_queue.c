@@ -1,7 +1,7 @@
 #include "e_queue.h"
 
-#ifndef CONFIG__E_BQ_MAX_PRINTF_LEN
-	#define CONFIG__E_BQ_MAX_PRINTF_LEN 128
+#ifndef CONFIG_E_BQ_MAX_PRINTF_LEN
+	#define CONFIG_E_BQ_MAX_PRINTF_LEN 128
 #endif
 
 void bq__clear(byte_queue_t *bq)
@@ -84,13 +84,13 @@ int32_t bq__enqueue_array(byte_queue_t *bq,uint8_t *buf,uint32_t len)
 queue_result_e bq__printf(byte_queue_t *bq, const char *format_string,...)
 {
 
-	 uint8_t bq_string_buffer[CONFIG__E_BQ_MAX_PRINTF_LEN+1];
+	 uint8_t bq_string_buffer[CONFIG_E_BQ_MAX_PRINTF_LEN+1];
      va_list argptr;
      va_start(argptr,format_string);
-     vsnprintf((char *)bq_string_buffer,CONFIG__E_BQ_MAX_PRINTF_LEN,format_string,argptr);
+     vsnprintf((char *)bq_string_buffer,CONFIG_E_BQ_MAX_PRINTF_LEN,format_string,argptr);
      va_end(argptr);
 
-     return bq__enqueue_array(bq,(uint8_t *)bq_string_buffer,strnlen((const char *)bq_string_buffer,CONFIG__E_BQ_MAX_PRINTF_LEN));
+     return bq__enqueue_array(bq,(uint8_t *)bq_string_buffer,strnlen((const char *)bq_string_buffer,CONFIG_E_BQ_MAX_PRINTF_LEN));
 }
 
 

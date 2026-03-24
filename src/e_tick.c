@@ -43,7 +43,7 @@ void e_tick__delay_ms(uint32_t delay_ms)
 
 uint32_t δt(uint32_t *time_in)
 {
-	if (time_in == CONFIG__E_NULL)
+	if (time_in == CONFIG_E_NULL)
 		return 0;
 
 	return e_tick__get_ms() - *time_in;

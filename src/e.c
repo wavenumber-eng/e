@@ -1,7 +1,7 @@
 #include "e.h"
 
 
-#if CONFIG__E_SHELL__ENABLE != 0
+#if CONFIG_E_SHELL_ENABLE != 0
 
 static e_shell__context_t e_shell__system = NULL;
 
@@ -29,11 +29,11 @@ int e__init()
 
 void e__crunch()
 {
-	#if CONFIG__E_TRIGGER__ENABLE != 0
+	#if CONFIG_E_TRIGGER_ENABLE != 0
 		e_trig__crunch();
 	#endif
 
-	#if CONFIG__E_SHELL__ENABLE != 0
+	#if CONFIG_E_SHELL_ENABLE != 0
 
 		if(e_shell__system!=NULL)
 		{

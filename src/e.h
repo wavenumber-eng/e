@@ -35,7 +35,7 @@ int 	e__init();
 }
 #endif
 
-#if CONFIG__E_SHELL__ENABLE != 0
+#if CONFIG_E_SHELL_ENABLE != 0
 
     #include "e_shell.h"
 

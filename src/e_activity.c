@@ -3,23 +3,23 @@
 #include "stdarg.h"
 
 
-#ifdef CONFIG__ENABLE_ACTIVITY_DBG
+#ifdef CONFIG_ENABLE_ACTIVITY_DBG
     #define ACT_ERR(...)    E_ERR(__VA_ARGS__); E_ERR("\n")
 #else
     #define ACT_ERR(...)
 #endif
 
-#ifndef CONFIG__E_NULL
-        #define CONFIG__E_NULL      NULL
+#ifndef CONFIG_E_NULL
+        #define CONFIG_E_NULL      NULL
 #endif
         
-#ifndef CONFIG__E_ACTIVITY__STACK_DEPTH
-    #define CONFIG__E_ACTIVITY__STACK_DEPTH 16 
+#ifndef CONFIG_E_ACTIVITY_STACK_DEPTH
+    #define CONFIG_E_ACTIVITY_STACK_DEPTH 16 
 #endif
 
 static  uint32_t        act_stack_pointer = 0;
-static  e_act_t        *act_stack[CONFIG__E_ACTIVITY__STACK_DEPTH];
-static  e_act_t        *current_activity = CONFIG__E_NULL;
+static  e_act_t        *act_stack[CONFIG_E_ACTIVITY_STACK_DEPTH];
+static  e_act_t        *current_activity = CONFIG_E_NULL;
 
 e_act_t * e_activity__current()
 {
@@ -33,7 +33,7 @@ void e_activity__stack_reset()
 
 e_act_err_e e_activity__switch(e_act_t *new_activity,int32_t msg_id,void *msg)
 {
-        if(new_activity == CONFIG__E_NULL)
+        if(new_activity == CONFIG_E_NULL)
         {
             ACT_ERR("e_activity__switch: new_activity is NULL");
             return e_activity_invalid;
@@ -42,11 +42,11 @@ e_act_err_e e_activity__switch(e_act_t *new_activity,int32_t msg_id,void *msg)
         e_activity__stack_reset();
          
         //Finish the current activity
-        if(current_activity!=CONFIG__E_NULL)
+        if(current_activity!=CONFIG_E_NULL)
         {
-            if(current_activity->exit != CONFIG__E_NULL)
+            if(current_activity->exit != CONFIG_E_NULL)
             {
-                current_activity->exit(eGFX_ACTIVITY_MSG_ID_SWITCH,(void *)CONFIG__E_NULL);
+                current_activity->exit(eGFX_ACTIVITY_MSG_ID_SWITCH,(void *)CONFIG_E_NULL);
             }
             else
             {
@@ -61,7 +61,7 @@ e_act_err_e e_activity__switch(e_act_t *new_activity,int32_t msg_id,void *msg)
         //Switch to the new activity
         current_activity = new_activity;
 
-        if(current_activity->enter != CONFIG__E_NULL)
+        if(current_activity->enter != CONFIG_E_NULL)
         {
             current_activity->enter(msg_id,msg);
         }
@@ -77,28 +77,28 @@ e_act_err_e e_activity__switch(e_act_t *new_activity,int32_t msg_id,void *msg)
 
 e_act_err_e e_activity__push(e_act_t *new_activity,int32_t msg_id,void *msg)
 {
-        if(new_activity == CONFIG__E_NULL)
+        if(new_activity == CONFIG_E_NULL)
         {
             ACT_ERR("e_activity__push: new_activity is NULL");
             return e_activity_invalid;
         }
 
-        if(act_stack_pointer>=CONFIG__E_ACTIVITY__STACK_DEPTH)
+        if(act_stack_pointer>=CONFIG_E_ACTIVITY_STACK_DEPTH)
         {
-            ACT_ERR("e_activity__push: stack full (depth=%d)", CONFIG__E_ACTIVITY__STACK_DEPTH);
+            ACT_ERR("e_activity__push: stack full (depth=%d)", CONFIG_E_ACTIVITY_STACK_DEPTH);
             return e_activity_stack_full;
         }
 
-        if(current_activity == CONFIG__E_NULL)
+        if(current_activity == CONFIG_E_NULL)
         {
             ACT_ERR("e_activity__push: current_activity is NULL, calling switch instead");
             return e_activity__switch(new_activity,msg_id,msg);
         }
 
         //Finish the current activity and tell it it will be pushed
-        if(current_activity->exit != CONFIG__E_NULL)
+        if(current_activity->exit != CONFIG_E_NULL)
         {
-            current_activity->exit(eGFX_ACTIVITY_MSG_ID_PUSH,(void *)CONFIG__E_NULL);
+            current_activity->exit(eGFX_ACTIVITY_MSG_ID_PUSH,(void *)CONFIG_E_NULL);
         }
         else
         {
@@ -113,7 +113,7 @@ e_act_err_e e_activity__push(e_act_t *new_activity,int32_t msg_id,void *msg)
         current_activity = new_activity;
 
         //send the push arguments to the new activity
-        if(current_activity->enter != CONFIG__E_NULL)
+        if(current_activity->enter != CONFIG_E_NULL)
         {
             current_activity->enter(msg_id,msg);
         }
@@ -138,11 +138,11 @@ e_act_err_e e_activity__pop(int32_t msg_id,void *msg)
         }
 
         //Exit the current activity.  We need to flag it that we are doing a pop (which is really an acknowledge)
-        if(current_activity != CONFIG__E_NULL)
+        if(current_activity != CONFIG_E_NULL)
         {
-            if(current_activity->exit != CONFIG__E_NULL)
+            if(current_activity->exit != CONFIG_E_NULL)
             {
-                current_activity->exit(eGFX_ACTIVITY_MSG_ID_POP,(void *)CONFIG__E_NULL);
+                current_activity->exit(eGFX_ACTIVITY_MSG_ID_POP,(void *)CONFIG_E_NULL);
             }
             else
             {
@@ -159,19 +159,19 @@ e_act_err_e e_activity__pop(int32_t msg_id,void *msg)
 
         current_activity = act_stack[act_stack_pointer];
 
-        if(current_activity == CONFIG__E_NULL)
+        if(current_activity == CONFIG_E_NULL)
         {
             ACT_ERR("e_activity__pop: activity from stack is NULL");
         }
 
         //Enter the new activity with the parameters returned from the old
-        if(current_activity != CONFIG__E_NULL && current_activity->enter != CONFIG__E_NULL)
+        if(current_activity != CONFIG_E_NULL && current_activity->enter != CONFIG_E_NULL)
         {
             current_activity->enter(msg_id,msg);
         }
         else
         {
-            if(current_activity == CONFIG__E_NULL)
+            if(current_activity == CONFIG_E_NULL)
             {
                 ACT_ERR("e_activity__pop: popped activity is NULL");
             }
@@ -188,9 +188,9 @@ e_act_err_e e_activity__pop(int32_t msg_id,void *msg)
 
 void e_activity__crunch()
 {
-    if(current_activity != CONFIG__E_NULL)
+    if(current_activity != CONFIG_E_NULL)
     {
-        if(current_activity->crunch != CONFIG__E_NULL)
+        if(current_activity->crunch != CONFIG_E_NULL)
         {
             current_activity->crunch(current_activity->user);
         }

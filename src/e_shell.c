@@ -1,41 +1,41 @@
 
-#if CONFIG__E_SHELL__ENABLE == 1
+#if CONFIG_E_SHELL_ENABLE == 1
 
 #include "string.h"
 #include "stdbool.h"
 #include "stdarg.h"
 #include "e.h"
 
-#ifndef CONFIG__E_SHELL_PRINTF_MAX_LEN
-	#define CONFIG__E_SHELL_PRINTF_MAX_LEN      (256U)
+#ifndef CONFIG_E_SHELL_PRINTF_MAX_LEN
+	#define CONFIG_E_SHELL_PRINTF_MAX_LEN      (256U)
 #endif
 
-#ifndef CONFIG__E_SHELL_USE_HISTORY
-	#define CONFIG__E_SHELL_USE_HISTORY 		(0U)
+#ifndef CONFIG_E_SHELL_USE_HISTORY
+	#define CONFIG_E_SHELL_USE_HISTORY 		(0U)
 #endif
 
-#ifndef CONFIG__E_SHELL_SEARCH_IN_HIST
-	#define CONFIG__E_SHELL_SEARCH_IN_HIST 		(1U)
+#ifndef CONFIG_E_SHELL_SEARCH_IN_HIST
+	#define CONFIG_E_SHELL_SEARCH_IN_HIST 		(1U)
 #endif
 
-#ifndef CONFIG__E_SHELL_AUTO_COMPLETE
-	#define CONFIG__E_SHELL_AUTO_COMPLETE 		(1U)
+#ifndef CONFIG_E_SHELL_AUTO_COMPLETE
+	#define CONFIG_E_SHELL_AUTO_COMPLETE 		(1U)
 #endif
 
-#ifndef CONFIG__E_SHELL_BUFFER_SIZE
-	#define CONFIG__E_SHELL_BUFFER_SIZE 		(64)
+#ifndef CONFIG_E_SHELL_BUFFER_SIZE
+	#define CONFIG_E_SHELL_BUFFER_SIZE 		(64)
 #endif
 
-#ifndef CONFIG__E_SHELL_MAX_ARGS
-	#define CONFIG__E_SHELL_MAX_ARGS 			(8U)
+#ifndef CONFIG_E_SHELL_MAX_ARGS
+	#define CONFIG_E_SHELL_MAX_ARGS 			(8U)
 #endif
 
-#ifndef CONFIG__E_SHELL_HIST_MAX
-	#define CONFIG__E_SHELL_HIST_MAX 			(4U)
+#ifndef CONFIG_E_SHELL_HIST_MAX
+	#define CONFIG_E_SHELL_HIST_MAX 			(4U)
 #endif
 
-#ifndef CONFIG__E_SHELL_MAX_CMD
-	#define CONFIG__E_SHELL_MAX_CMD (32)
+#ifndef CONFIG_E_SHELL_MAX_CMD
+	#define CONFIG_E_SHELL_MAX_CMD (32)
 #endif
 
 
@@ -43,7 +43,7 @@
 #define KET_DEL (0x7FU)
 
 
-static int32_t parse_line(e_shell__context_t ThisShellContext, const char *cmd, uint32_t len, char *argv[CONFIG__E_SHELL_MAX_ARGS]); /*!< parse line command */
+static int32_t parse_line(e_shell__context_t ThisShellContext, const char *cmd, uint32_t len, char *argv[CONFIG_E_SHELL_MAX_ARGS]); /*!< parse line command */
 
 static int32_t str_cmp(const char *str1, const char *str2, int32_t count); /*!< compare string command */
 
@@ -129,7 +129,7 @@ void e_shell__crunch(e_shell__context_t shell)
                 /* Handle tab key */
                 else if (ch == '\t')
                 {
-        #if CONFIG__E_SHELL_AUTO_COMPLETE
+        #if CONFIG_E_SHELL_AUTO_COMPLETE
                     /* Move the cursor to the beginning of line */
                     for (i = 0; i < shell->c_pos; i++)
                     {
@@ -142,7 +142,7 @@ void e_shell__crunch(e_shell__context_t shell)
         #endif
                     continue;
                 }
-        #if CONFIG__E_SHELL_SEARCH_IN_HIST
+        #if CONFIG_E_SHELL_SEARCH_IN_HIST
                 /* Search command in history */
                 else if ((ch == '`') && (shell->l_pos == 0) && (shell->line[0] == 0x00))
                 {
@@ -187,7 +187,7 @@ void e_shell__crunch(e_shell__context_t shell)
                 }
 
                 /* Input too long */
-                if (shell->l_pos >= (CONFIG__E_SHELL_BUFFER_SIZE - 1))
+                if (shell->l_pos >= (CONFIG_E_SHELL_BUFFER_SIZE - 1))
                 {
                     shell->l_pos = 0;
                 }
@@ -238,7 +238,7 @@ static void process_cmd(e_shell__context_t shell, const char *cmd)
     static const e_shell__command_context_t *tmpCommand = NULL;
     static const char *tmpCommandString;
     int32_t argc;
-    char *argv[CONFIG__E_SHELL_BUFFER_SIZE];
+    char *argv[CONFIG_E_SHELL_BUFFER_SIZE];
     uint8_t flag = 0;
     uint8_t tmpCommandLen;
     uint8_t tmpLen;
@@ -293,16 +293,16 @@ static void process_cmd(e_shell__context_t shell, const char *cmd)
         /* Compare with last command. Push back to history buffer if different */
         if (tmpLen != str_cmp(cmd, shell->hist_buf[0], StrLen(cmd)))
         {
-            for (i = CONFIG__E_SHELL_HIST_MAX - 1; i > 0; i--)
+            for (i = CONFIG_E_SHELL_HIST_MAX - 1; i > 0; i--)
             {
-                memset(shell->hist_buf[i], '\0', CONFIG__E_SHELL_BUFFER_SIZE);
+                memset(shell->hist_buf[i], '\0', CONFIG_E_SHELL_BUFFER_SIZE);
                 tmpLen = StrLen(shell->hist_buf[i - 1]);
                 StrCopy(shell->hist_buf[i], shell->hist_buf[i - 1], tmpLen);
             }
-            memset(shell->hist_buf[0], '\0', CONFIG__E_SHELL_BUFFER_SIZE);
+            memset(shell->hist_buf[0], '\0', CONFIG_E_SHELL_BUFFER_SIZE);
             tmpLen = StrLen(cmd);
             StrCopy(shell->hist_buf[0], cmd, tmpLen);
-            if (shell->hist_count < CONFIG__E_SHELL_HIST_MAX)
+            if (shell->hist_count < CONFIG_E_SHELL_HIST_MAX)
             {
                 shell->hist_count++;
             }
@@ -340,9 +340,9 @@ static void get_history(e_shell__context_t shell, uint8_t hist_pos)
         shell->hist_current = 0;
         return;
     }
-    if (hist_pos > CONFIG__E_SHELL_HIST_MAX)
+    if (hist_pos > CONFIG_E_SHELL_HIST_MAX)
     {
-        hist_pos = CONFIG__E_SHELL_HIST_MAX - 1;
+        hist_pos = CONFIG_E_SHELL_HIST_MAX - 1;
     }
     tmp = StrLen(shell->line);
     /* Clear current if have */
@@ -457,7 +457,7 @@ static int32_t str_cmp(const char *str1, const char *str2, int32_t count)
     return 0;
 }
 
-static int32_t parse_line(e_shell__context_t ThisShellContext,const char *cmd, uint32_t len, char *argv[CONFIG__E_SHELL_MAX_ARGS])
+static int32_t parse_line(e_shell__context_t ThisShellContext,const char *cmd, uint32_t len, char *argv[CONFIG_E_SHELL_MAX_ARGS])
 {
     uint32_t argc;
     char *p;
@@ -522,7 +522,7 @@ int32_t e_shell__register_cmd(e_shell__context_t shell,
     int32_t result = 0;
 
     /* If have room  in command list */
-    if (shell->ShellCommands.numberOfCommandInList < CONFIG__E_SHELL_MAX_CMD)
+    if (shell->ShellCommands.numberOfCommandInList < CONFIG_E_SHELL_MAX_CMD)
     {
         shell->ShellCommands.CommandList[shell->ShellCommands.numberOfCommandInList].pcCommand = command;
         shell->ShellCommands.CommandList[shell->ShellCommands.numberOfCommandInList].pcHelpString = help_string;

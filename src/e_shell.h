@@ -1,7 +1,7 @@
 #ifndef _E__SHELL_H_
 #define _E__SHELL_H_
 
-#if CONFIG__E_SHELL__ENABLE == 1
+#if CONFIG_E_SHELL_ENABLE == 1
 
 #include "stdint.h"
 #include "stdbool.h"
@@ -34,7 +34,7 @@ typedef struct _shell_command_context
 
 typedef struct _shell_command_context_list
 {
-    e_shell__command_context_t CommandList[CONFIG__E_SHELL_MAX_CMD]; /*!< The command table list */
+    e_shell__command_context_t CommandList[CONFIG_E_SHELL_MAX_CMD]; /*!< The command table list */
     uint8_t numberOfCommandInList;                             /*!< The total command in list */
 } e_shell__command_context_list_t;
 
@@ -51,7 +51,7 @@ typedef struct _shell_context_struct
     char *prompt;
     enum _fun_key_status stat;
     char *Description;
-    char line[CONFIG__E_SHELL_BUFFER_SIZE];
+    char line[CONFIG_E_SHELL_BUFFER_SIZE];
     uint32_t                    CurrentPrivilegeLevel;
     uint8_t cmd_num;
     uint8_t l_pos;
@@ -64,9 +64,9 @@ typedef struct _shell_context_struct
 
     uint16_t hist_current;                            /*!< Current history command in hist buff*/
     uint16_t hist_count;                              /*!< Total history command in hist buff*/
-    char hist_buf[CONFIG__E_SHELL_HIST_MAX][CONFIG__E_SHELL_BUFFER_SIZE]; /*!< History buffer*/
+    char hist_buf[CONFIG_E_SHELL_HIST_MAX][CONFIG_E_SHELL_BUFFER_SIZE]; /*!< History buffer*/
 
-    char  g_paramBuffer[CONFIG__E_SHELL_BUFFER_SIZE];
+    char  g_paramBuffer[CONFIG_E_SHELL_BUFFER_SIZE];
 
     e_shell__command_context_list_t        ShellCommands;
 

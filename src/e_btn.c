@@ -4,8 +4,8 @@
     #define NULL   0
 #endif
 
-#ifndef CONFIG__E_NULL
-        #define CONFIG__E_NULL      NULL
+#ifndef CONFIG_E_NULL
+        #define CONFIG_E_NULL      NULL
 #endif
 
 #define E_BTN_DBG(...)
@@ -15,13 +15,13 @@ void e_btn__init(e_btn_t *btn,
                     e_btn_read_t read
                  )
 {
-    if(btn!=CONFIG__E_NULL)
+    if(btn!=CONFIG_E_NULL)
     {
-        btn->next = CONFIG__E_NULL;
+        btn->next = CONFIG_E_NULL;
         btn->read = read;
-        btn->down_cb = CONFIG__E_NULL;
-        btn->up_cb = CONFIG__E_NULL;
-        btn->user = CONFIG__E_NULL;
+        btn->down_cb = CONFIG_E_NULL;
+        btn->up_cb = CONFIG_E_NULL;
+        btn->user = CONFIG_E_NULL;
         btn->debounce_time_ms = debounce_time_ms;
         btn->down = 0;
         btn->up = 0;
@@ -40,18 +40,18 @@ bool e_btn__add_to_list(e_btn_t *btn_list,e_btn_t *btn)
         E_BTN_DBG("We add a btn to ourselves");
         return false;
     }
-    if(btn_list==CONFIG__E_NULL)
+    if(btn_list==CONFIG_E_NULL)
     {
         E_BTN_DBG("btn_list is null.");
         return false;
     }
-    if(btn==CONFIG__E_NULL)
+    if(btn==CONFIG_E_NULL)
     {
         E_BTN_DBG("btn is null.  Cannot add to list.");
         return false;
     }
 
-    while(btn_list->next != CONFIG__E_NULL)
+    while(btn_list->next != CONFIG_E_NULL)
     {
         if(btn_list->next == btn_list)
         {
@@ -70,12 +70,12 @@ bool e_btn__add_to_list(e_btn_t *btn_list,e_btn_t *btn)
 
 void e_btn__crunch_internal(e_btn_t *btn, uint32_t process_time_ms)
 {
-    if(btn == CONFIG__E_NULL)
+    if(btn == CONFIG_E_NULL)
     {
         return;
     }
    
-    if(btn->read == CONFIG__E_NULL)
+    if(btn->read == CONFIG_E_NULL)
     {
         return;
     }
@@ -103,7 +103,7 @@ void e_btn__crunch_internal(e_btn_t *btn, uint32_t process_time_ms)
                 {
                     btn->state = BTN_STATE__WAIT_FOR_RELEASE;
                     btn->hold_time = btn->debounce_timer;
-                    if(btn->down_cb != CONFIG__E_NULL)
+                    if(btn->down_cb != CONFIG_E_NULL)
                     {
                         btn->down_cb(btn);
                     }
@@ -148,7 +148,7 @@ void e_btn__crunch_internal(e_btn_t *btn, uint32_t process_time_ms)
                 {
                     btn->state = BTN_STATE__WAIT_FOR_PRESS;
                    
-                    if(btn->up_cb != CONFIG__E_NULL)
+                    if(btn->up_cb != CONFIG_E_NULL)
                     {
                         btn->up_cb(btn);
                     }
@@ -191,7 +191,7 @@ void e_btn__crunch_internal(e_btn_t *btn, uint32_t process_time_ms)
 
 void e_btn__crunch(e_btn_t *btn, uint32_t process_time_ms)
 {
-    while(btn!=CONFIG__E_NULL)
+    while(btn!=CONFIG_E_NULL)
     {
         e_btn__crunch_internal(btn,process_time_ms);
         btn=btn->next;
@@ -277,26 +277,26 @@ void e_btn_tap__init(e_btn_tap_t *tap,
                      uint32_t gap_window_ms,
                      e_btn_read_t read)
 {
-    if(tap == CONFIG__E_NULL)
+    if(tap == CONFIG_E_NULL)
     {
         return;
     }
 
     e_btn__init(&tap->btn, debounce_time_ms, read);
-    tap->next = CONFIG__E_NULL;
-    tap->event_cb = CONFIG__E_NULL;
+    tap->next = CONFIG_E_NULL;
+    tap->event_cb = CONFIG_E_NULL;
     tap->gap_window_ms = gap_window_ms;
     tap->gap_timer = 0;
     tap->event = 0;
     tap->count = 0;
     tap->state = BTN_TAP_STATE__IDLE;
-    tap->user = CONFIG__E_NULL;
+    tap->user = CONFIG_E_NULL;
 }
 
 
 static void e_btn_tap__crunch_internal(e_btn_tap_t *tap, uint32_t process_time_ms)
 {
-    if(tap == CONFIG__E_NULL)
+    if(tap == CONFIG_E_NULL)
     {
         return;
     }
@@ -337,7 +337,7 @@ static void e_btn_tap__crunch_internal(e_btn_tap_t *tap, uint32_t process_time_m
 
                 if(tap->gap_timer > tap->gap_window_ms)
                 {
-                    if(tap->event_cb != CONFIG__E_NULL)
+                    if(tap->event_cb != CONFIG_E_NULL)
                     {
                         tap->event_cb(tap, tap->count);
                     }
@@ -358,7 +358,7 @@ static void e_btn_tap__crunch_internal(e_btn_tap_t *tap, uint32_t process_time_m
 
 void e_btn_tap__crunch(e_btn_tap_t *tap, uint32_t process_time_ms)
 {
-    while(tap != CONFIG__E_NULL)
+    while(tap != CONFIG_E_NULL)
     {
         e_btn_tap__crunch_internal(tap, process_time_ms);
         tap = tap->next;
@@ -386,16 +386,16 @@ bool e_btn_tap__add_to_list(e_btn_tap_t *list, e_btn_tap_t *tap)
     {
         return false;
     }
-    if(list == CONFIG__E_NULL)
+    if(list == CONFIG_E_NULL)
     {
         return false;
     }
-    if(tap == CONFIG__E_NULL)
+    if(tap == CONFIG_E_NULL)
     {
         return false;
     }
 
-    while(list->next != CONFIG__E_NULL)
+    while(list->next != CONFIG_E_NULL)
     {
         if(list->next == list)
         {

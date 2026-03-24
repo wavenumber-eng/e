@@ -5,7 +5,7 @@
 #ifndef E__DEBUG_H_
 #define E__DEBUG_H_
 
-#if CONFIG__E_LOG__RTT_ENABLE == 1
+#if CONFIG_E_LOG_RTT_ENABLE == 1
 
 #include "external/rtt/SEGGER_RTT.h"
 
@@ -18,7 +18,7 @@
 #endif
 
 
-#if CONFIG__E_LOG__ENABLE  != (0)
+#if CONFIG_E_LOG_ENABLE  != (0)
 
 #define E_LOG(...) SEGGER_RTT_LOG(__VA_ARGS__);
 #define E_LOG_INF(...) SEGGER_RTT_LOG(__VA_ARGS__);

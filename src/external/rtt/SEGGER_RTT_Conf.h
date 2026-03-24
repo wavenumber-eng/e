@@ -64,8 +64,8 @@ Revision: $Rev: 24316 $
 
 #include "e_config.h"
 
-#ifndef CONFIG__E_LOG__RTT_TX_BUFFER_SIZE
-    #define CONFIG__E_LOG__RTT_TX_BUFFER_SIZE 1024
+#ifndef CONFIG_E_LOG_RTT_TX_BUFFER_SIZE
+    #define CONFIG_E_LOG_RTT_TX_BUFFER_SIZE 1024
 #endif
 
 
@@ -99,7 +99,7 @@ Revision: $Rev: 24316 $
 #endif
 
 #ifndef   BUFFER_SIZE_UP
-  #define BUFFER_SIZE_UP                            (CONFIG__E_LOG__RTT_TX_BUFFER_SIZE)  // Size of the buffer for terminal output of target, up to host (Default: 1k)
+  #define BUFFER_SIZE_UP                            (CONFIG_E_LOG_RTT_TX_BUFFER_SIZE)  // Size of the buffer for terminal output of target, up to host (Default: 1k)
 #endif
 
 #ifndef   BUFFER_SIZE_DOWN

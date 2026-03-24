@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
-if(CONFIG__E)
+if(CONFIG_E)
   
     zephyr_library()
 

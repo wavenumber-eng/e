@@ -41,7 +41,7 @@ void e_state__crunch(e_state_machine_t *sm)
 
 	if (sm->master_state == e_state__crunching)
 	{
-		if(sm->state_table != CONFIG__E_NULL)
+		if(sm->state_table != CONFIG_E_NULL)
 		{
 			sm->state_table[sm->current_state].state_function(sm);
 		}
@@ -53,7 +53,7 @@ void e_state__transition(e_state_machine_t * sm,
 {
 	if (sm->master_state == e_state__crunching)
 	{
-		if(sm->transition != CONFIG__E_NULL)
+		if(sm->transition != CONFIG_E_NULL)
 		{
 			if(sm->transition(sm,next_state) == true)
 			{

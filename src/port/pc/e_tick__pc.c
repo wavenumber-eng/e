@@ -60,7 +60,7 @@ void e_tick__delay_ms(uint32_t delay_ms)
         // Fallback for unknown platforms - your original implementation
         e__delay_ticker = 0;
         while (e__delay_ticker < delay_ms) {
-            CONFIG__E_WFI;
+            CONFIG_E_WFI;
         }
     #endif
 }

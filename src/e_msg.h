@@ -7,8 +7,8 @@
 #include <stdbool.h>
 
 
-#ifndef CONFIG__MSG_HANDLER_DEFAULT_TIMEOUT
-    #define CONFIG__MSG_HANDLER_DEFAULT_TIMEOUT     100
+#ifndef CONFIG_E_MSG_HANDLER_DEFAULT_TIMEOUT
+    #define CONFIG_E_MSG_HANDLER_DEFAULT_TIMEOUT     100
 #endif
 
 
@@ -40,7 +40,7 @@ typedef struct e_msg_proc_inst
                                                e_msg_proc_inst_t name = { \
                                               .max_payload_length=length, \
                                               .payload=msg_##name##__payload__storage,\
-                                              .timeout=CONFIG__MSG_HANDLER_DEFAULT_TIMEOUT,\
+                                              .timeout=CONFIG_E_MSG_HANDLER_DEFAULT_TIMEOUT,\
                                               .msg_handler=handler\
                                               }
 
